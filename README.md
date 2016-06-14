@@ -21,7 +21,7 @@ LWJGL not supplied here, but should be configured in Eclipse to import GLFW etc.
 
 ## Usage
 
-- To use the engine, simply call `Engine.start()` and supply some `EngineCallbacks` for essential events. After OpenGL has rendered its first frame, `onLoadResources()` will be called, allowing loading of textures, sprites, fonts, etc. A sample font bitmap is included, and is treated like a standard sprite sheet.
+To use the engine, simply call `Engine.start()` from `main()`, and supply some `EngineCallbacks` for essential events. After OpenGL has rendered its first frame, `onLoadResources()` will be called, allowing loading of textures, sprites, fonts, etc. A sample font bitmap is included, and is treated like a standard sprite sheet.
 
 ```java
 String title = "Game Window";
