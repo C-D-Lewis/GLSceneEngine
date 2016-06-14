@@ -23,7 +23,7 @@ LWJGL not supplied here, but should be configured in Eclipse to import GLFW etc.
 
 - To use the engine, simply call `Engine.start()` and supply some `EngineCallbacks` for essential events. After OpenGL has rendered its first frame, `onLoadResources()` will be called, allowing loading of textures, sprites, fonts, etc. A sample font bitmap is included, and is treated like a standard sprite sheet.
 
-```
+```java
 String title = "Game Window";
 Rectangle screenRect = new Rectangle(0, 0, 1280, 720);
 boolean fullscreen = false;
@@ -79,7 +79,7 @@ The engine will automatically loop the `onUpdate()` and `onDraw()` methods of th
 
 For example, the `HelloWorld.java` `Scene`:
 
-```
+```java
 public class HelloWorld extends Scene {
 	
 	public static final int SCENE_ID = 2364;
@@ -117,7 +117,7 @@ Any object can broadcast or receive any kind of event with attached parameters (
 
 Example: When a key is pressed in `KeyboardManager`:
 
-```
+```java
 boolean pressed = (action == GLFW.GLFW_PRESS) || (action == GLFW.GLFW_REPEAT);
 keys.put(key, pressed);
 
@@ -129,7 +129,7 @@ EventBus.broadcast(Events.EVENT_KEY_CHANGE, params);
 
 This event is received in `BSEDemoMain.java` and parsed by obtaining the params as specified by the emitting class: 
 
-```
+```java
 // Register for keypresses
 EventBus.register(new EventReceiver(KeyboardManager.Events.EVENT_KEY_CHANGE, false) {
   
