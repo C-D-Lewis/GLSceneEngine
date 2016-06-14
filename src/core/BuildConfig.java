@@ -21,7 +21,7 @@ public class BuildConfig {
 		DEBUG = true,
 		DRAW_DEBUG_OVERLAY = true,
 		DRAW_TEXT_BOUNDS = false,
-		LOG_ALL_EVENTS_FIRED = true;
+		LOG_ALL_EVENTS_FIRED = false;
 	
 	public static final String DEBUG_LOG_PATH = "./debug-log.log";
 	

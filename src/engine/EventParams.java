@@ -1,7 +1,10 @@
 package engine;
 
+import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
+
+import core.Logger;
 
 public class EventParams {
 	
@@ -15,7 +18,7 @@ public class EventParams {
 		if(data.containsKey(tag)) {
 			return (int)data.get(tag);
 		} else {
-//			Logger.log(EventParams.class, "Tag " + tag + " not found!", Logger.ERROR, true);
+			Logger.log(EventParams.class, "Tag " + tag + " not found!", Logger.ERROR, true);
 			return 0;
 		}
 	}
@@ -24,7 +27,7 @@ public class EventParams {
 		if(data.containsKey(tag)) {
 			return (String)data.get(tag);
 		} else {
-//			Logger.log(EventParams.class, "Tag " + tag + " not found!", Logger.ERROR, true);
+			Logger.log(EventParams.class, "Tag " + tag + " not found!", Logger.ERROR, true);
 			return "";
 		}
 	}
@@ -33,8 +36,17 @@ public class EventParams {
 		if(data.containsKey(tag)) {
 			return (boolean)data.get(tag);
 		} else {
-//			Logger.log(EventParams.class, "Tag " + tag + " not found!", Logger.ERROR, true);
+			Logger.log(EventParams.class, "Tag " + tag + " not found!", Logger.ERROR, true);
 			return false;
+		}
+	}
+	
+	public Point getPoint(String tag) {
+		if(data.containsKey(tag)) {
+			return (Point)data.get(tag);
+		} else {
+			Logger.log(EventParams.class, "Tag " + tag + " not found!", Logger.ERROR, true);
+			return null;
 		}
 	}
 	

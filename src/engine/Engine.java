@@ -1,16 +1,19 @@
 package engine;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.MouseListener;
 
 import managers.ConfigManager;
 import managers.KeyboardManager;
+import managers.MouseManager;
 import managers.SceneManager;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
@@ -26,7 +29,7 @@ import data.FontRenderer.Align;
  * Abstract instantiated single-threaded JOGL OpenGL engine with lifecycle-based scenes
  * @author Chris Lewis
  */
-public abstract class Engine implements MouseListener {
+public abstract class Engine {
 	public static final int
 		CHROME_WIDTH = 5,
 		CHROME_HEIGHT = 28;
@@ -55,7 +58,6 @@ public abstract class Engine implements MouseListener {
 		windowRect = rect;
 		fullscreen = fs;
 		callbacks = cbs;
-		
 		fpsBounds = new Rectangle(5, 5, 300, 20);
 		
 		// Blank until OpenGL init
@@ -89,6 +91,8 @@ public abstract class Engine implements MouseListener {
 	
     private static GLFWErrorCallback errorCallback;
     private static GLFWKeyCallback keyCallback;
+    private static GLFWMouseButtonCallback mouseCallback;
+    private static GLFWCursorPosCallback posCallback;
     
     private static void lwjglInit() {
         GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
@@ -108,6 +112,7 @@ public abstract class Engine implements MouseListener {
             throw new RuntimeException("Failed to create the GLFW window");
         }
  
+        // Keyboard input
         GLFW.glfwSetKeyCallback(glWindow, keyCallback = new GLFWKeyCallback() {
             
         	@Override
@@ -116,7 +121,28 @@ public abstract class Engine implements MouseListener {
             }
         	
         });
+        
+        // Mouse input
+        GLFW.glfwSetMouseButtonCallback(glWindow, mouseCallback = new GLFWMouseButtonCallback() {
+			
+			@Override
+			public void invoke(long window, int glfwButton, int action, int mods) {
+				boolean pressed = (action == GLFW.GLFW_PRESS);
+				MouseManager.dispatchMouseButtonEvent(glfwButton, pressed);
+			}
+			
+		});
+        GLFW.glfwSetCursorPosCallback(glWindow, posCallback = new GLFWCursorPosCallback() {
+			
+			@Override
+			public void invoke(long window, double xpos, double ypos) {
+				Point pos = new Point((int)xpos, (int)ypos);
+				MouseManager.dispatchMousePositionEvent(pos);
+			}
+			
+		});
  
+        // Video mode
         GLFWVidMode vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
         if(!ConfigManager.getBoolean(ConfigManager.DB_KEY_FULLSCREEN, true)) {
 	        GLFW.glfwSetWindowPos(glWindow,
@@ -178,6 +204,8 @@ public abstract class Engine implements MouseListener {
 		 
 		            GLFW.glfwDestroyWindow(glWindow);
 		            keyCallback.release();
+		            mouseCallback.release();
+		            posCallback.release();
 		        } finally {
 		            GLFW.glfwTerminate();
 		            errorCallback.release();

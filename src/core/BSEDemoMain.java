@@ -1,10 +1,14 @@
 package core;
 
-import org.lwjgl.glfw.GLFW;
+import java.awt.Point;
 
 import managers.ConfigManager;
 import managers.KeyboardManager;
+import managers.MouseManager;
 import managers.SceneManager;
+
+import org.lwjgl.glfw.GLFW;
+
 import scenes.HelloWorld;
 import data.Resources;
 import engine.Engine;
@@ -46,6 +50,29 @@ public class BSEDemoMain {
 							// Escape to exit
 							onWindowClose();
 						}
+					}
+					
+				});
+				
+				// Register for mouse input
+				EventBus.register(new EventReceiver(MouseManager.Events.EVENT_BUTTON_STATE, false) {
+					
+					@Override
+					public void onReceive(EventParams params) {
+						boolean pressed = params.getBoolean(MouseManager.Events.PARAM_PRESSED);
+						String str = "Mouse " + (pressed ? "clicked!" : "released!");
+						
+						Logger.log(BSEDemoMain.class, str, Logger.INFO, false);
+					}
+					
+				});
+				EventBus.register(new EventReceiver(MouseManager.Events.EVENT_MOVED, false) {
+					
+					@Override
+					public void onReceive(EventParams params) {
+						Point pos = params.getPoint(MouseManager.Events.PARAM_POSITION);
+						
+						Logger.log(BSEDemoMain.class, "Mouse now at: " + pos, Logger.INFO, false);
 					}
 					
 				});
