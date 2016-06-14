@@ -70,7 +70,43 @@ Engine.start(title, screenRect, fullscreen, new EngineCallbacks() {
 });
 ```
 
-- Build your game using `Scene`s, rendering, and mouse and keyboard input using the `KeyboardManager` and `MouseManager` classes.
+
+## Building a Game
+
+Build your game using `Scene`s, rendering, and mouse and keyboard input using the `KeyboardManager` and `MouseManager` classes.
+
+The engine will automatically loop the `onUpdate()` and `onDraw()` methods of the currently set `Scene`, so all things appearing in the scene should be looped similarly in these callbacks.
+
+For example, the `HelloWorld.java` `Scene`:
+
+```
+public class HelloWorld extends Scene {
+	
+	public static final int SCENE_ID = 2364;
+
+	@Override
+	public void onLoad() {
+
+	}
+
+	@Override
+	public void onUpdate() {
+
+	}
+
+	@Override
+	public void onDraw() {
+		GLHelpers.setColorFromColor(Color.WHITE);
+		FontRenderer.drawString("Hello world!", BuildConfig.SCREEN_RECT, 16, Align.CENTER, Align.CENTER);
+	}
+
+	@Override
+	public int getSceneId() {
+		return SCENE_ID;
+	}
+
+}
+```
 
 
 ## Using EventBus

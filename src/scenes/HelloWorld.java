@@ -24,7 +24,6 @@ public class HelloWorld extends Scene {
 
 	@Override
 	public void onDraw() {
-		
 		GLHelpers.setColorFromColor(Color.WHITE);
 		FontRenderer.drawString("Hello world!", BuildConfig.SCREEN_RECT, 16, Align.CENTER, Align.CENTER);
 	}
