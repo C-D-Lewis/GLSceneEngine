@@ -1,14 +1,20 @@
 package core;
 
+import org.lwjgl.glfw.GLFW;
+
 import managers.ConfigManager;
+import managers.KeyboardManager;
 import managers.SceneManager;
 import scenes.HelloWorld;
 import data.Resources;
 import engine.Engine;
 import engine.EngineCallbacks;
+import engine.EventBus;
+import engine.EventParams;
+import engine.EventReceiver;
 import engine.Scene;
 
-public class BSEMain {
+public class BSEDemoMain {
 	
 	public static void main(String[] args) {
 		init();
@@ -27,7 +33,23 @@ public class BSEMain {
 		Engine.start(title, BuildConfig.SCREEN_RECT, fullscreen, new EngineCallbacks() {
 			
 			@Override
-			public void onFirstLoad() { }
+			public void onFirstLoad() { 
+				// Register for keypresses
+				EventBus.register(new EventReceiver(KeyboardManager.Events.EVENT_KEY_CHANGE, false) {
+					
+					@Override
+					public void onReceive(EventParams params) {
+						int glfwKey = params.getInt(KeyboardManager.Events.PARAM_KEY);
+						boolean pressed = params.getBoolean(KeyboardManager.Events.PARAM_STATE);
+						
+						if(glfwKey == GLFW.GLFW_KEY_ESCAPE && !pressed) {
+							// Escape to exit
+							onWindowClose();
+						}
+					}
+					
+				});
+			}
 			
 			@Override
 			public void onLoadResources() {
