@@ -1,6 +1,6 @@
 # GLSceneEngine
 
-Scene-based OpenGL Java game engine. `src/core/BSEDemoMain.java` demonstrates a basic instantiation for 'Hello World!' display. 
+Scene-based OpenGL ([LWJGL](https://www.lwjgl.org/download)) Java game engine. `src/core/BSEDemoMain.java` demonstrates a basic instantiation for 'Hello World!' display. 
 
 The engine updates and renders the current `Scene` (the first is provided in `getInitialGameScene()`), and the game should set a new one when required (logos, main menu, loading screens etc.) using `SceneManager.setScene()`.
 
