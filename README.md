@@ -39,8 +39,7 @@ Engine.start(title, screenRect, fullscreen, new EngineCallbacks() {
 	
 	@Override
 	public void onLoadResources() {
-		// initialize resources that require OpenGL to be initialized
-		Resources.initWithGL();
+		// Initialize resources that require OpenGL to be initialized
 	}
 	
 	@Override
