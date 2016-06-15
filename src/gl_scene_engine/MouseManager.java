@@ -4,12 +4,18 @@ import java.awt.Point;
 
 public class MouseManager {
 	
+	private static boolean enabled;
+	
 	public static final int
 		MOUSE_LEFT = 0,
 		MOUSE_RIGHT = 1,
 		MOUSE_MIDDLE = 2;
 
 	public static void dispatchMouseButtonEvent(int button, boolean pressed) {
+		if(!enabled) {
+			return;
+		}
+		
 		EventParams params = new EventParams();
 		params.put(Events.PARAM_BUTTON, button);
 		params.put(Events.PARAM_PRESSED, pressed);
@@ -17,9 +23,17 @@ public class MouseManager {
 	}
 	
 	public static void dispatchMousePositionEvent(Point pos) {
+		if(!enabled) {
+			return;
+		}
+		
 		EventParams params = new EventParams();
 		params.put(Events.PARAM_POSITION, pos);
 		EventBus.broadcast(Events.EVENT_MOVED, params);
+	}
+	
+	public static void setEnabled(boolean enabled) {
+		MouseManager.enabled = enabled;
 	}
 	
 	public static class Events {

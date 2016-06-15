@@ -76,7 +76,8 @@ public class EventBus {
 					}
 				}
 			} else {
-				Logger.log(EventBus.class, "No events registered for event tag " + tag, Logger.WARN, true);
+				// Spammy
+//				Logger.log(EventBus.class, "No events registered for event tag " + tag, Logger.WARN, true);
 			}
 		}
 	}
