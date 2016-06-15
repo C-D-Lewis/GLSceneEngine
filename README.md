@@ -14,7 +14,7 @@ LWJGL not supplied here, but should be configured in Eclipse to import GLFW etc.
 ## Features
 
 - Single threaded update, render, repeat game loop.
-- `EventBus` for simplified inter-object messaging, registering, broadcasting etc. Check classes for `vents` available to listen for.
+- `EventBus` for simplified inter-object messaging, registering, broadcasting etc. Check classes for `Events` available to listen for.
 - `KeyboardManager` and `MouseManager` emit `Events` for user input.
 - LWJGL-based OpenGL helpers for images, rects, etc.
 - `FontRenderer` for bitmap-based string rendering in OpenGL.
@@ -121,13 +121,19 @@ Any object can broadcast or receive any kind of event with attached parameters (
 Example: When a key is pressed in `KeyboardManager`:
 
 ```java
-boolean pressed = (action == GLFW.GLFW_PRESS) || (action == GLFW.GLFW_REPEAT);
-keys.put(key, pressed);
-
-EventParams params = new EventParams();
-params.put(Events.PARAM_KEY, key);
-params.put(Events.PARAM_STATE, pressed);
-EventBus.broadcast(Events.EVENT_KEY_CHANGE, params);
+public static void dispatchKeyEvent(int key, int action) {
+  if(!enabled) {
+    return;
+  }
+	
+  boolean pressed = (action == GLFW.GLFW_PRESS) || (action == GLFW.GLFW_REPEAT);
+  keys.put(key, pressed);
+	
+  EventParams params = new EventParams();
+  params.put(Events.PARAM_KEY, key);
+  params.put(Events.PARAM_STATE, pressed);
+  EventBus.broadcast(Events.EVENT_KEY_CHANGE, params);
+}
 ```
 
 This event is received in `BSEDemoMain.java` and parsed by obtaining the params as specified by the emitting class: 
@@ -141,9 +147,9 @@ EventBus.register(new EventReceiver(KeyboardManager.Events.EVENT_KEY_CHANGE, fal
     int glfwKey = params.getInt(KeyboardManager.Events.PARAM_KEY);
     boolean pressed = params.getBoolean(KeyboardManager.Events.PARAM_STATE);
     
+    // Escape to exit
     if(glfwKey == GLFW.GLFW_KEY_ESCAPE && !pressed) {
-      // Escape to exit
-      onWindowClose();
+      Engine.stop();
     }
   }
   
