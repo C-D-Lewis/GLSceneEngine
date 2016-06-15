@@ -88,14 +88,10 @@ public class HelloWorld extends Scene {
   public static final int SCENE_ID = 2364;
 
   @Override
-  public void onLoad() {
-
-  }
+  public void onLoad() { }
 
   @Override
-  public void onUpdate() {
-
-  }
+  public void onUpdate() { }
 
   @Override
   public void onDraw() {
