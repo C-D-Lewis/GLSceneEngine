@@ -226,7 +226,7 @@ public class FontRenderer {
 	private class Config {
 		
 		private static final boolean
-			DRAW_TEXT_BOUNDS = true;
+			DRAW_TEXT_BOUNDS = false;
 		
 	}
 

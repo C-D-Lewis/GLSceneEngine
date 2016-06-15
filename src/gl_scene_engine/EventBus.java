@@ -35,7 +35,10 @@ public class EventBus {
 				events.add(e);
 				bus.put(tag, events);
 			}
-			Logger.log(EventBus.class, "Registered event " + e.toString() + " for tag " + tag, Logger.INFO, true);
+			
+			if(Config.LOG_ALL_EVENTS) {
+				Logger.log(EventBus.class, "Registered event " + e.toString() + " for tag " + tag, Logger.INFO, true);
+			}
 		}
 	}
 	
@@ -48,7 +51,9 @@ public class EventBus {
 			while(iter.hasNext()) {
 				if(iter.next() == e) {
 					iter.remove();
-					Logger.log(EventBus.class, "Deregistered event " + e.toString() + " for tag " + tag, Logger.INFO, true);
+					if(Config.LOG_ALL_EVENTS) {
+						Logger.log(EventBus.class, "Deregistered event " + e.toString() + " for tag " + tag, Logger.INFO, true);
+					}
 				}
 			}
 		}
