@@ -11,10 +11,10 @@ import gl_scene_engine.EngineCallbacks;
 import gl_scene_engine.EventBus;
 import gl_scene_engine.EventParams;
 import gl_scene_engine.EventReceiver;
+import gl_scene_engine.FontRenderer;
 import gl_scene_engine.KeyboardManager;
 import gl_scene_engine.Logger;
 import gl_scene_engine.MouseManager;
-import gl_scene_engine.Resources;
 import gl_scene_engine.Scene;
 import gl_scene_engine.SceneManager;
 
@@ -81,7 +81,7 @@ public class BSEDemoMain {
 			@Override
 			public void onLoadResources() {
 				// initialize resources that require OpenGL to be initialized
-				Resources.initWithGL();
+				FontRenderer.loadFontFile("./res/fonts/blocky.png");
 			}
 			
 			@Override

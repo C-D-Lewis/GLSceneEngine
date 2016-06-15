@@ -1,6 +1,7 @@
 package gl_scene_engine;
 
 
+
 /**
  * Very thin FileDB wrapper that includes config keys the game will listen for
  */
@@ -15,7 +16,7 @@ public class ConfigManager {
 	private ConfigManager() { }
 	
 	public static void load() {
-		db = new INIParser(Resources.FilePaths.CONFIG);
+		db = new INIParser("./config.ini");
 		if(db.get(DB_KEY_FULLSCREEN, false) == null) {
 			// Default settings
 			db.put(DB_KEY_FULLSCREEN, Boolean.toString(false));
