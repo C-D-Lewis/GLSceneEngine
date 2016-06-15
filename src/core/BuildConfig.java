@@ -18,11 +18,6 @@ public class BuildConfig {
 		SCREEN_RECT = new Rectangle(0, 0, 1280, 720);
 	
 	public static boolean
-		DEBUG = true,
-		DRAW_DEBUG_OVERLAY = true,
-		DRAW_TEXT_BOUNDS = false,
-		LOG_ALL_EVENTS_FIRED = false;
-	
-	public static final String DEBUG_LOG_PATH = "./debug-log.log";
+		DEBUG = true;
 	
 }

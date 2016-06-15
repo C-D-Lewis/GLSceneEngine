@@ -25,7 +25,7 @@ public class BSEDemoMain {
 	}
 	
 	private static void init() {
-		Logger.setLogPath(BuildConfig.DEBUG_LOG_PATH);
+		Logger.setLogPath("./debug-log.log");
 		ConfigManager.load();
 		setupEngine();
 	}
