@@ -136,7 +136,7 @@ public static void dispatchKeyEvent(int key, int action) {
 }
 ```
 
-This event is received in `BSEDemoMain.java` and parsed by obtaining the params as specified by the emitting class: 
+This event is received in `HelloWorld.java` and parsed by obtaining the params as specified by the emitting class: 
 
 ```java
 // Register for keypresses
