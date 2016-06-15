@@ -33,43 +33,43 @@ Rectangle screenRect = new Rectangle(0, 0, 1280, 720);
 boolean fullscreen = false;
 
 Engine.start(title, screenRect, fullscreen, new EngineCallbacks() {
-	
-	@Override
-	public void onFirstLoad() { }
-	
-	@Override
-	public void onLoadResources() {
-		// Initialize resources that require OpenGL to be initialized
-	}
-	
-	@Override
-	public Scene getInitialGameScene() {
-		// First game Scene once OpenGL is initialized
-		return new HelloWorld();
-	}
-	
-	@Override
-	public void onUpdate() {
-		// Update the current Scene's logic (and all sub-components)
-		SceneManager.onUpdate();
-	}
-	
-	@Override
-	public void onDraw() {
-		// Draw the current Scene (and all sub-components)
-		SceneManager.onDraw();
-	}
+  
+  @Override
+  public void onFirstLoad() { }
+  
+  @Override
+  public void onLoadResources() {
+    // Initialize resources that require OpenGL to be initialized
+  }
+  
+  @Override
+  public Scene getInitialGameScene() {
+    // First game Scene once OpenGL is initialized
+    return new HelloWorld();
+  }
+  
+  @Override
+  public void onUpdate() {
+    // Update the current Scene's logic (and all sub-components)
+    SceneManager.onUpdate();
+  }
+  
+  @Override
+  public void onDraw() {
+    // Draw the current Scene (and all sub-components)
+    SceneManager.onDraw();
+  }
 
-	@Override
-	public void onSecondThreadFrame() {
-		// Perform any per-frame asynchronous work off the drawing thread
-	}
+  @Override
+  public void onSecondThreadFrame() {
+    // Perform any per-frame asynchronous work off the drawing thread
+  }
 
-	@Override
-	public void onWindowClose() {
-		System.exit(0);
-	}
-	
+  @Override
+  public void onWindowClose() {
+    System.exit(0);
+  }
+  
 });
 ```
 
@@ -84,29 +84,29 @@ For example, the `HelloWorld.java` `Scene`:
 
 ```java
 public class HelloWorld extends Scene {
-	
-	public static final int SCENE_ID = 2364;
+  
+  public static final int SCENE_ID = 2364;
 
-	@Override
-	public void onLoad() {
+  @Override
+  public void onLoad() {
 
-	}
+  }
 
-	@Override
-	public void onUpdate() {
+  @Override
+  public void onUpdate() {
 
-	}
+  }
 
-	@Override
-	public void onDraw() {
-		GLHelpers.setColorFromColor(Color.WHITE);
-		FontRenderer.drawString("Hello world!", BuildConfig.SCREEN_RECT, 16, Align.CENTER, Align.CENTER);
-	}
+  @Override
+  public void onDraw() {
+    GLHelpers.setColorFromColor(Color.WHITE);
+    FontRenderer.drawString("Hello world!", BuildConfig.SCREEN_RECT, 16, Align.CENTER, Align.CENTER);
+  }
 
-	@Override
-	public int getSceneId() {
-		return SCENE_ID;
-	}
+  @Override
+  public int getSceneId() {
+    return SCENE_ID;
+  }
 
 }
 ```
@@ -125,10 +125,10 @@ public static void dispatchKeyEvent(int key, int action) {
   if(!enabled) {
     return;
   }
-	
+  
   boolean pressed = (action == GLFW.GLFW_PRESS) || (action == GLFW.GLFW_REPEAT);
   keys.put(key, pressed);
-	
+  
   EventParams params = new EventParams();
   params.put(Events.PARAM_KEY, key);
   params.put(Events.PARAM_STATE, pressed);
