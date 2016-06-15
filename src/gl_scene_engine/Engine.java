@@ -315,6 +315,10 @@ public abstract class Engine {
 		callbacks.onWindowClose();
 	}
 	
+	public static void stop() {
+		onWindowClose();
+	}
+	
 	public static class Events {
 		
 		public static final String 
