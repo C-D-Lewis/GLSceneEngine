@@ -42,8 +42,8 @@ public class GLHelpers {
 		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, name);
 		
-		// CRITICAL - Reset the color, maybe not
-	    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F); 
+		// CRITICAL - Reset the color, maybe not (appears be be per-tile layer basis, handled there)
+//	    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F); 
 		
 //		// Reset the alpha
 //		float r = (float)currentColor.getRed() / 255.0F;

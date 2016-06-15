@@ -51,6 +51,8 @@ public abstract class Engine {
 		callbacks = cbs;
 		fpsBounds = new Rectangle(5, 5, 300, 20);
 		
+		KeyboardManager.setEnabled(true);
+		
 		// Blank until OpenGL init
 		SceneManager.setScene(new Scene() {
 			
