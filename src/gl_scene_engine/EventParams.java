@@ -1,10 +1,8 @@
-package engine;
+package gl_scene_engine;
 
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
-
-import core.Logger;
 
 public class EventParams {
 	

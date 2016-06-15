@@ -1,11 +1,8 @@
-package managers;
+package gl_scene_engine;
 
 import java.util.HashMap;
 
 import org.lwjgl.glfw.GLFW;
-
-import engine.EventBus;
-import engine.EventParams;
 
 /**
  * User Input Dispatcher class to maintain state of any implemented key for checking at any time.

@@ -1,4 +1,4 @@
-package core;
+package gl_scene_engine;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,7 +45,7 @@ public class Logger {
 				fw.close();
 			}
 			
-			if(BuildConfig.RELEASE_BUILD) {
+			if(!Config.LOG_TO_CONSOLE) {
 				// Keep the console clean for consumers
 				return true;
 			}
@@ -89,6 +89,12 @@ public class Logger {
 			log(Logger.class, description, Logger.ERROR, true);
 			System.exit(1);
 		}
+	}
+	
+	private class Config {
+		
+		private static final boolean LOG_TO_CONSOLE = true;
+		
 	}
 
 }

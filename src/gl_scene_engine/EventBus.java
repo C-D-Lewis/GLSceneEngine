@@ -1,12 +1,9 @@
-package engine;
+package gl_scene_engine;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Iterator;
-
-import core.BuildConfig;
-import core.Logger;
 
 /**
  * For when passing abstract methods up and down three classes seems a bit silly
@@ -60,7 +57,7 @@ public class EventBus {
 	public static void broadcast(String tag, EventParams params) {
 		synchronized(bus) {
 			if(bus.containsKey(tag)) {
-				if(BuildConfig.LOG_ALL_EVENTS_FIRED) {
+				if(Config.LOG_ALL_EVENTS) {
 					Logger.log(EventBus.class, "Firing event: " + tag + " with params: " + params.toString(), Logger.DEBUG, false);
 				}
 				
@@ -77,6 +74,13 @@ public class EventBus {
 				Logger.log(EventBus.class, "No events registered for event tag " + tag, Logger.WARN, true);
 			}
 		}
+	}
+	
+	private class Config {
+		
+		private static final boolean
+			LOG_ALL_EVENTS = false;
+		
 	}
 
 }

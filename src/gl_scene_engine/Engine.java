@@ -1,13 +1,10 @@
-package engine;
+package gl_scene_engine;
+
+import gl_scene_engine.FontRenderer.Align;
 
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
-
-import managers.ConfigManager;
-import managers.KeyboardManager;
-import managers.MouseManager;
-import managers.SceneManager;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
@@ -18,12 +15,6 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
-
-import util.GLHelpers;
-import core.BuildConfig;
-import core.Logger;
-import data.FontRenderer;
-import data.FontRenderer.Align;
 
 /**
  * Abstract instantiated single-threaded JOGL OpenGL engine with lifecycle-based scenes
@@ -270,7 +261,7 @@ public abstract class Engine {
 	 */
 	public static void draw() {
 		callbacks.onDraw();
-		if(BuildConfig.DRAW_DEBUG_OVERLAY) {
+		if(Config.DRAW_DEBUG_OVERLAY) {
 			drawDebugOverlay();
 		}
 		
@@ -328,6 +319,13 @@ public abstract class Engine {
 		
 		public static final String 
 			EVENT_FIRST_GL_FRAME = Engine.class.getName() + "FIRST_GL_FRAME";
+		
+	}
+	
+	private class Config {
+		
+		private static final boolean
+			DRAW_DEBUG_OVERLAY = true;
 		
 	}
 	

@@ -1,4 +1,4 @@
-package managers;
+package gl_scene_engine;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -9,8 +9,6 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-
-import core.Logger;
 
 public class TextureManager {
 	

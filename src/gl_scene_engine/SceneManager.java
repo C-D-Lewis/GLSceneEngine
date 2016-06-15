@@ -1,7 +1,5 @@
-package managers;
+package gl_scene_engine;
 
-import core.Logger;
-import engine.Scene;
 
 /**
  * Manages the current Scene's lifecycle and iteration

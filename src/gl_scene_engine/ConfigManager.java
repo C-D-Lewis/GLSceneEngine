@@ -1,7 +1,5 @@
-package managers;
+package gl_scene_engine;
 
-import data.INIParser;
-import data.Resources;
 
 /**
  * Very thin FileDB wrapper that includes config keys the game will listen for

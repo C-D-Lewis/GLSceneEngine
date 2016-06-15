@@ -1,15 +1,10 @@
-package util;
+package gl_scene_engine;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
-import managers.TextureManager;
-
 import org.lwjgl.opengl.GL11;
-
-import core.Logger;
-import data.FontRenderer;
 
 public class GLHelpers {
 	

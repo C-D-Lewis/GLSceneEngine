@@ -2,11 +2,11 @@ package scenes;
 
 import java.awt.Color;
 
-import util.GLHelpers;
 import core.BuildConfig;
-import data.FontRenderer;
-import data.FontRenderer.Align;
-import engine.Scene;
+import gl_scene_engine.FontRenderer;
+import gl_scene_engine.GLHelpers;
+import gl_scene_engine.Scene;
+import gl_scene_engine.FontRenderer.Align;
 
 public class HelloWorld extends Scene {
 	

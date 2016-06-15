@@ -1,4 +1,4 @@
-package engine;
+package gl_scene_engine;
 
 public abstract class EventReceiver {
 	

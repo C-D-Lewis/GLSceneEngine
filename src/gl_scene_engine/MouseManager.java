@@ -1,9 +1,6 @@
-package managers;
+package gl_scene_engine;
 
 import java.awt.Point;
-
-import engine.EventBus;
-import engine.EventParams;
 
 public class MouseManager {
 	

@@ -1,12 +1,10 @@
-package data;
+package gl_scene_engine;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.HashMap;
-
-import core.Logger;
 
 public class INIParser {
 	

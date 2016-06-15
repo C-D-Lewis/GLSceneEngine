@@ -1,14 +1,10 @@
-package data;
+package gl_scene_engine;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-
-import util.GLHelpers;
-import core.BuildConfig;
-import core.Logger;
 
 public class FontRenderer {
 	
@@ -203,7 +199,7 @@ public class FontRenderer {
 		for(String l : lines) {
 			textSize = getTextSize(l, bounds.width, fontSize);
 			resetRenderPointX(bounds, renderPoint, textSize, hAlign);
-			if(BuildConfig.DRAW_TEXT_BOUNDS) {
+			if(Config.DRAW_TEXT_BOUNDS) {
 				GLHelpers.setColorFromColor(Color.PINK);
 				GLHelpers.fillRect(new Rectangle(renderPoint.x, renderPoint.y, textSize.width, textSize.height));
 				GLHelpers.popColor();
@@ -225,6 +221,13 @@ public class FontRenderer {
 			// New line
 			renderPoint.y += fontSize + (2 * glyphGap);
 		}
+	}
+	
+	private class Config {
+		
+		private static final boolean
+			DRAW_TEXT_BOUNDS = true;
+		
 	}
 
 }

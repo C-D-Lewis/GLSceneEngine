@@ -1,4 +1,4 @@
-package data;
+package gl_scene_engine;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -8,11 +8,7 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
-import managers.TextureManager;
-
 import org.lwjgl.opengl.GL11;
-
-import core.Logger;
 
 /**
  * Tile sheet parser to get tiles from a single image

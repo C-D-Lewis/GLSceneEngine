@@ -2,21 +2,21 @@ package core;
 
 import java.awt.Point;
 
-import managers.ConfigManager;
-import managers.KeyboardManager;
-import managers.MouseManager;
-import managers.SceneManager;
-
 import org.lwjgl.glfw.GLFW;
 
 import scenes.HelloWorld;
-import data.Resources;
-import engine.Engine;
-import engine.EngineCallbacks;
-import engine.EventBus;
-import engine.EventParams;
-import engine.EventReceiver;
-import engine.Scene;
+import gl_scene_engine.ConfigManager;
+import gl_scene_engine.Engine;
+import gl_scene_engine.EngineCallbacks;
+import gl_scene_engine.EventBus;
+import gl_scene_engine.EventParams;
+import gl_scene_engine.EventReceiver;
+import gl_scene_engine.KeyboardManager;
+import gl_scene_engine.Logger;
+import gl_scene_engine.MouseManager;
+import gl_scene_engine.Resources;
+import gl_scene_engine.Scene;
+import gl_scene_engine.SceneManager;
 
 public class BSEDemoMain {
 	
