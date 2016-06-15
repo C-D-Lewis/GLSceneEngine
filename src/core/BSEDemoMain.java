@@ -1,6 +1,5 @@
 package core;
 
-import gl_scene_engine.ConfigManager;
 import gl_scene_engine.Engine;
 import gl_scene_engine.EngineCallbacks;
 import gl_scene_engine.FontRenderer;
@@ -17,15 +16,13 @@ public class BSEDemoMain {
 	
 	private static void init() {
 		Logger.setLogPath("./debug-log.log");
-		ConfigManager.load();
 		setupEngine();
 	}
 
 	private static void setupEngine() {
 		String title = BuildConfig.GAME_NAME + " v" + BuildConfig.VERSION_STRING;
-		boolean fullscreen = ConfigManager.getBoolean(ConfigManager.DB_KEY_FULLSCREEN, true);
 
-		Engine.start(title, BuildConfig.SCREEN_RECT, fullscreen, new EngineCallbacks() {
+		Engine.start(title, BuildConfig.SCREEN_RECT, new EngineCallbacks() {
 			
 			@Override
 			public void onFirstLoad() { }
@@ -57,6 +54,7 @@ public class BSEDemoMain {
 			@Override
 			public void onSecondThreadFrame() {
 				// Perform any per-frame asynchronous work off the drawing thread
+				SceneManager.onSecondThreadFrame();
 			}
 
 			@Override

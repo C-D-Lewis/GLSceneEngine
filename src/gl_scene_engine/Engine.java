@@ -44,13 +44,14 @@ public abstract class Engine {
 	
 	private Engine() { }
 	
-	public static void start(String name, Rectangle rect, boolean fs,EngineCallbacks cbs) {
+	public static void start(String name, Rectangle rect, EngineCallbacks cbs) {
 		windowName = name;
 		windowRect = rect;
-		fullscreen = fs;
 		callbacks = cbs;
 		fpsBounds = new Rectangle(5, 5, 300, 20);
-		
+
+		ConfigManager.load();
+		fullscreen = ConfigManager.getBoolean(ConfigManager.DB_KEY_FULLSCREEN, true);
 		KeyboardManager.setEnabled(true);
 		
 		// Blank until OpenGL init
