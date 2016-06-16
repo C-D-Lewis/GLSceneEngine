@@ -1,26 +1,26 @@
 # GLSceneEngine
 
-Scene-based OpenGL ([LWJGL](https://www.lwjgl.org/download)) Java game engine. 
+Scene-oriented 2D Java game engine using OpenGL (via [LWJGL](https://www.lwjgl.org/download)). 
 
-Included `src/core/BSEDemoMain.java` demonstrates a basic instantiation for 'Hello World!' display.
+Included `BSEDemoMain.java` demonstrates a basic instantiation for 'Hello World!' display.
 
 ![](screenshot.png) 
 
 The engine updates and renders the current `Scene` (the first is provided in `getInitialGameScene()`), and the game should set a new one when required (logos, main menu, loading screens etc.) using `SceneManager.setScene()`.
 
-LWJGL not supplied here, but should be configured in Eclipse to import GLFW etc.
+LWJGL not supplied here, but should be configured in Eclipse to import `GLFW` etc.
 
 
 ## Features
 
 - Single threaded update, render, repeat game loop.
-- `EventBus` for simplified inter-object messaging, registering, broadcasting etc. Check classes for `Events` available to listen for.
+- `EventBus` for simplified inter-object messaging, registering, broadcasting etc. Check classes for `Event`s available to listen for.
 - `KeyboardManager` and `MouseManager` emit `Events` for user input.
-- LWJGL-based OpenGL helpers for images, rects, etc.
-- `FontRenderer` for bitmap-based string rendering in OpenGL.
+- LWJGL-based OpenGL helpers for images, rects, etc in `GLHelpers` class.
+- `FontRenderer` for bitmap-based string rendering in OpenGL. Fonts are implemented by extending `Font`. See `Blocky` for an example.
 - `TileSheetParser` to load tiles/sprites/font characters as equally-sized bitmaps from a larger sheet. Parsed tiles are uploaded to OpenGL.
 - `INIParser` class to read simple `.ini` files. Used in `ConfigManager` to handle config settings on initialization.
-- `Logger` class to log debug info to console and output `.log` file.
+- `Logger` class to log debug info to console and output `.log` file. Includes crashing via assertion failure.
 
 
 ## Usage

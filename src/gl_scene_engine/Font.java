@@ -15,6 +15,9 @@ public abstract class Font {
 		return sheet;
 	}
 	
+	/**
+	 * @return a mapping of characters in a string to grid locations in the font's PNG
+	 */
 	public abstract Point characterToGlyphSheetPoint(char c);
 
 }
