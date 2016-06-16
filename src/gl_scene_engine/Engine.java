@@ -16,18 +16,11 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
 
-/**
- * Abstract instantiated single-threaded JOGL OpenGL engine with lifecycle-based scenes
- * @author Chris Lewis
- */
 public abstract class Engine {
 	public static final int
 		CHROME_WIDTH = 5,
 		CHROME_HEIGHT = 28;
 	
-	private static final String
-		ENGINE_NAME = "SceneEngine",
-		ENGINE_VERSION = "0.1.0";	// Major, feature, patch
 	private static final int 
 		FRAME_RATE = 60,
 		FPS_PERIOD = 1000 / FRAME_RATE,
@@ -70,12 +63,10 @@ public abstract class Engine {
 		//Setup graphics, must happen in this order
 		startOpenGLLoop();
 		waitForOpenGLInit();
+		beginSecondThread();
 		
 		//Load user stuff
 		callbacks.onFirstLoad();
-		
-		begin();
-		Logger.log(Engine.class, ENGINE_NAME + " version " + ENGINE_VERSION + " started.", Logger.INFO, true);
 	}
 	
 	/*
@@ -229,7 +220,7 @@ public abstract class Engine {
 	/**
 	 * Start execution
 	 */
-	private static void begin() {
+	private static void beginSecondThread() {
 		// Second thread for non-renderable calculations
 		secondThread = new Thread(new Runnable() {
 			
