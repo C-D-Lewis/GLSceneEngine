@@ -1,7 +1,9 @@
 package gl_scene_engine;
 
+import java.awt.Point;
 
-public abstract class Font implements FontSheetMap {
+
+public abstract class Font {
 	
 	private TileSheetParser sheet;
 	
@@ -12,5 +14,7 @@ public abstract class Font implements FontSheetMap {
 	public TileSheetParser getSheet() {
 		return sheet;
 	}
+	
+	public abstract Point characterToGlyphSheetPoint(char c);
 
 }

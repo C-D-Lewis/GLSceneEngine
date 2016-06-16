@@ -309,6 +309,10 @@ public abstract class Engine {
 		callbacks.onWindowClose();
 	}
 	
+	public static int getFrameRate() {
+		return FRAME_RATE;
+	}
+
 	public static void stop() {
 		onWindowClose();
 	}

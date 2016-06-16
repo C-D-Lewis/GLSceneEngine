@@ -181,7 +181,7 @@ public class FontRenderer {
 			
 			// Render them
 			for(char c : chars) {
-				Point sheetPoint = font.characterToGlythPoint(c);
+				Point sheetPoint = font.characterToGlyphSheetPoint(c);
 				int name = sheet.bindTileTexture(sheetPoint);
 				GLHelpers.drawImageFromTextureName(name, renderPoint.x, renderPoint.y, fontSize, fontSize);
 	

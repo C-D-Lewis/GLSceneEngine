@@ -12,9 +12,9 @@ public class Blocky extends Font {
 		super("./res/fonts/blocky.png", 8);
 	}
 
-	public Point characterToGlythPoint(char c) {
+	@Override
+	public Point characterToGlyphSheetPoint(char c) {
 		int index = c - 'a';
-//		System.out.println(c + " -> " + index);
 		
 		if(index >= 0 && index < 26) {
 			// a - z
@@ -38,7 +38,7 @@ public class Blocky extends Font {
 				case ',': return new Point(3, 8);
 				default:
 					Logger.log(FontRenderer.class, "Invalid character: " + c, Logger.WARN, false);
-					return characterToGlythPoint('?');
+					return characterToGlyphSheetPoint('?');
 			}
 		}
 	}

@@ -39,8 +39,8 @@ public class MouseManager {
 	public static class Events {
 		
 		public static final String
-			EVENT_MOVED = "MOVED",
-			EVENT_BUTTON_STATE = "BUTTON_STATE";
+			EVENT_MOVED = MouseManager.class.getName() + "MOVED",
+			EVENT_BUTTON_STATE = MouseManager.class.getName() + "BUTTON_STATE";
 		
 		public static final String
 			PARAM_POSITION = "POSITION",
