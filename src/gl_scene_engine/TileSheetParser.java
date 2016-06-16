@@ -21,7 +21,7 @@ public class TileSheetParser {
 	private int tileSize;
 
 	/**
-	 * Constructor
+	 * Constructor. Assumes square glyphs
 	 * @param sheetPath	Path to tile sheet
 	 */
 	public TileSheetParser(String path, int tileSize, boolean discardBlank) {

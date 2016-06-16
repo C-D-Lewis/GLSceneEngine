@@ -19,52 +19,19 @@ public class FontRenderer {
 		
 	}
 	
-	private static final Dimension 
-		FONT_GLYTH_SIZE = new Dimension(8, 8),
-		GLYPH_GRID_SIZE = new Dimension(5, 8);
 	
-	private static TileSheetParser sheet;
 	
-	public static void loadFontFile(String sheetPath) {
-		sheet = new TileSheetParser(sheetPath, FONT_GLYTH_SIZE.width, false);
+	private static Font font;
+	
+	public static void setFont(Font f) {
+		font = f;
 	}
 	
-	private static Point characterToGlythPoint(char c) {
-		int index = c - 'a';
-//		System.out.println(c + " -> " + index);
-		
-		if(index >= 0 && index < 26) {
-			// a - z
-			return i2xy(index);
-		} else if(index >= -49 && index < -39) {
-			// 0 - 9
-			return i2xy(index + 49 + 26);
-		} else if(index >= -32 && index < -6) {
-			// A - Z, shift to 0
-			return i2xy(index + 32);
-		} else {
-			// Special characters
-			switch(c) {
-				case ' ':
-					return new Point(1, 7);
-				case '.':
-					return new Point(2, 7);
-				case '?':
-					return new Point(3, 7);
-				case '!':
-					return new Point(4, 7);
-				default:
-					Logger.log(FontRenderer.class, "Invalid character: " + c, Logger.WARN, false);
-					return new Point(0, 0);
-			}
-		}
-	}
+//	private static Point i2xy(int i, int rowSize) {
+//		return new Point(i % GLYPH_GRID_SIZE.width, i / GLYPH_GRID_SIZE.width);
+//	}
 	
-	private static Point i2xy(int i) {
-		return new Point(i % GLYPH_GRID_SIZE.width, i / GLYPH_GRID_SIZE.width);
-	}
-	
-	public static void testFont() {
+	public static void test() {
 		GLHelpers.setColorFromColor(Color.WHITE);
 		String text = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ.0123456789 .!?";
 		int fontSize = 16;
@@ -138,6 +105,9 @@ public class FontRenderer {
 	}
 	
 	public static void drawString(String content, Rectangle bounds, int fontSize, int hAlign, int vAlign) {
+		Logger.assertOrCrash(font != null, "FontRenderer.setFont() not called");
+		
+		TileSheetParser sheet = font.getSheet();
 		Dimension textSize = getTextSize(content, bounds.width, fontSize);
 		int glyphGap = fontSize / 10 > 0 ? fontSize / 10 : 1;
 		
@@ -211,7 +181,7 @@ public class FontRenderer {
 			
 			// Render them
 			for(char c : chars) {
-				Point sheetPoint = characterToGlythPoint(c);
+				Point sheetPoint = font.characterToGlythPoint(c);
 				int name = sheet.bindTileTexture(sheetPoint);
 				GLHelpers.drawImageFromTextureName(name, renderPoint.x, renderPoint.y, fontSize, fontSize);
 	

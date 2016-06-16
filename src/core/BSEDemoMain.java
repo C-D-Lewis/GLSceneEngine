@@ -1,5 +1,6 @@
 package core;
 
+import gl_scene_engine.Blocky;
 import gl_scene_engine.Engine;
 import gl_scene_engine.EngineCallbacks;
 import gl_scene_engine.FontRenderer;
@@ -30,7 +31,7 @@ public class BSEDemoMain {
 			@Override
 			public void onLoadResources() {
 				// initialize resources that require OpenGL to be initialized
-				FontRenderer.loadFontFile("./res/fonts/blocky.png");
+				FontRenderer.setFont(new Blocky());
 			}
 			
 			@Override
