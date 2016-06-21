@@ -2,7 +2,7 @@
 
 Scene-oriented 2D Java game engine using OpenGL (via [LWJGL](https://www.lwjgl.org/download)). 
 
-Included `BSEDemoMain.java` demonstrates a basic instantiation for 'Hello World!' display.
+Included `SEDemoMain.java` demonstrates a basic instantiation for 'Hello World!' display.
 
 ![](screenshot.png) 
 
