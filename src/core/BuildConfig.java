@@ -10,7 +10,7 @@ public class BuildConfig {
 	public static final boolean RELEASE_BUILD = false;
 	
 	public static final String
-		GAME_NAME = "Base Scene Engine",
+		GAME_NAME = "SceneEngine Demo",
 		VERSION_STRING = "0.0.1";	// Stable, Feature, Patch
 	public static final int RELEASE_NUMBER = 1;
 	

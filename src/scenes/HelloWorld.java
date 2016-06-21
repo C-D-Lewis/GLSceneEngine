@@ -5,19 +5,19 @@ import java.awt.Point;
 
 import org.lwjgl.glfw.GLFW;
 
-import core.BSEDemoMain;
+import scene_engine.Engine;
+import scene_engine.EventBus;
+import scene_engine.EventParams;
+import scene_engine.EventReceiver;
+import scene_engine.FontRenderer;
+import scene_engine.GLHelpers;
+import scene_engine.KeyboardManager;
+import scene_engine.Logger;
+import scene_engine.MouseManager;
+import scene_engine.Scene;
+import scene_engine.FontRenderer.Align;
+import core.SEDemoMain;
 import core.BuildConfig;
-import gl_scene_engine.Engine;
-import gl_scene_engine.EventBus;
-import gl_scene_engine.EventParams;
-import gl_scene_engine.EventReceiver;
-import gl_scene_engine.FontRenderer;
-import gl_scene_engine.GLHelpers;
-import gl_scene_engine.KeyboardManager;
-import gl_scene_engine.Logger;
-import gl_scene_engine.MouseManager;
-import gl_scene_engine.Scene;
-import gl_scene_engine.FontRenderer.Align;
 
 public class HelloWorld extends Scene {
 	
@@ -49,7 +49,7 @@ public class HelloWorld extends Scene {
 				boolean pressed = params.getBoolean(MouseManager.Events.PARAM_PRESSED);
 				String str = "Mouse " + (pressed ? "clicked!" : "released!");
 				
-				Logger.log(BSEDemoMain.class, str, Logger.INFO, false);
+				Logger.log(SEDemoMain.class, str, Logger.INFO, false);
 			}
 			
 		});
@@ -59,7 +59,7 @@ public class HelloWorld extends Scene {
 			public void onReceive(EventParams params) {
 				Point pos = params.getPoint(MouseManager.Events.PARAM_POSITION);
 				
-				Logger.log(BSEDemoMain.class, "Mouse now at: " + pos, Logger.INFO, false);
+				Logger.log(SEDemoMain.class, "Mouse now at: " + pos, Logger.INFO, false);
 			}
 			
 		});

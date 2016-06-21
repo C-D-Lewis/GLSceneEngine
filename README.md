@@ -1,4 +1,4 @@
-# GLSceneEngine
+# SceneEngine
 
 Scene-oriented 2D Java game engine using OpenGL (via [LWJGL](https://www.lwjgl.org/download)). 
 

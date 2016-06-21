@@ -1,15 +1,15 @@
 package core;
 
-import gl_scene_engine.Blocky;
-import gl_scene_engine.Engine;
-import gl_scene_engine.EngineCallbacks;
-import gl_scene_engine.FontRenderer;
-import gl_scene_engine.Logger;
-import gl_scene_engine.Scene;
-import gl_scene_engine.SceneManager;
+import scene_engine.Blocky;
+import scene_engine.Engine;
+import scene_engine.EngineCallbacks;
+import scene_engine.FontRenderer;
+import scene_engine.Logger;
+import scene_engine.Scene;
+import scene_engine.SceneManager;
 import scenes.HelloWorld;
 
-public class BSEDemoMain {
+public class SEDemoMain {
 	
 	public static void main(String[] args) {
 		init();

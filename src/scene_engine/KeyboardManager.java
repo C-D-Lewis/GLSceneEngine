@@ -1,4 +1,4 @@
-package gl_scene_engine;
+package scene_engine;
 
 import java.util.HashMap;
 

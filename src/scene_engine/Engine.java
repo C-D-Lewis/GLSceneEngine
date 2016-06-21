@@ -1,6 +1,4 @@
-package gl_scene_engine;
-
-import gl_scene_engine.FontRenderer.Align;
+package scene_engine;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -15,6 +13,8 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
+
+import scene_engine.FontRenderer.Align;
 
 public abstract class Engine {
 	public static final int
