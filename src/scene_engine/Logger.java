@@ -22,11 +22,6 @@ public class Logger {
 		logPath = path;
 	}
 	
-	/**
-	 * Log info about game
-	 * @param toFile Note: Only non-per-frame entries should be logged to file.
-	 * @return
-	 */
 	public static boolean log(Class<?> clz, String message, String level, boolean toFile) {
 		try {	
 			String TAG = clz.getName();

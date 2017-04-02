@@ -1,13 +1,7 @@
 package scene_engine;
 
-
-
-/**
- * Very thin FileDB wrapper that includes config keys the game will listen for
- */
 public class ConfigManager {
 	
-	// Key list
 	public static final String
 		DB_KEY_FULLSCREEN = "fullscreen";
 	
@@ -23,8 +17,8 @@ public class ConfigManager {
 		}
 	}
 	
-	public static String getString(String key, boolean requried) {
-		return db.get(key, requried);
+	public static String getString(String key, boolean required) {
+		return db.get(key, required);
 	}
 	
 	public static boolean getBoolean(String key, boolean required) {

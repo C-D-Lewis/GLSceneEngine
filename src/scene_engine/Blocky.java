@@ -20,13 +20,13 @@ public class Blocky extends Font {
 		
 		if(index >= 0 && index < 26) {
 			// a - z
-			return MathHelpers.i2xy(index, GLYPH_GRID_SIZE.width);
+			return Helpers.i2xy(index, GLYPH_GRID_SIZE.width);
 		} else if(index >= -49 && index < -39) {
 			// 0 - 9
-			return MathHelpers.i2xy(index + 49 + 26, GLYPH_GRID_SIZE.width);
+			return Helpers.i2xy(index + 49 + 26, GLYPH_GRID_SIZE.width);
 		} else if(index >= -32 && index < -6) {
 			// A - Z, shift to 0
-			return MathHelpers.i2xy(index + 32, GLYPH_GRID_SIZE.width);
+			return Helpers.i2xy(index + 32, GLYPH_GRID_SIZE.width);
 		} else {
 			// Special characters
 			switch(c) {

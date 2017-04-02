@@ -19,17 +19,11 @@ public class FontRenderer {
 		
 	}
 	
-	
-	
 	private static Font font;
 	
 	public static void setFont(Font f) {
 		font = f;
 	}
-	
-//	private static Point i2xy(int i, int rowSize) {
-//		return new Point(i % GLYPH_GRID_SIZE.width, i / GLYPH_GRID_SIZE.width);
-//	}
 	
 	public static void test() {
 		GLHelpers.setColorFromColor(Color.WHITE);
@@ -79,7 +73,6 @@ public class FontRenderer {
 
 				renderPoint.x = 0;
 				renderPoint.y += fontSize + (2 * glyphGap);
-				
 			}
 		}
 		

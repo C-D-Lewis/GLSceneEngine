@@ -5,20 +5,12 @@ import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Iterator;
 
-/**
- * For when passing abstract methods up and down three classes seems a bit silly
- */
 public class EventBus {
 	
-	// I love how easy parameterized types makes this!
 	private static HashMap<String, ArrayList<EventReceiver>> bus = new HashMap<String, ArrayList<EventReceiver>>();
 	
 	private EventBus() { }
 	
-	/**
-	 * Register a new event for this broadcast tag
-	 * Deregister in onPause if the scene goes away
-	 */
 	public static void register(EventReceiver e) {
 		synchronized(bus) {
 			String tag = e.getTag();
@@ -75,9 +67,6 @@ public class EventBus {
 						Logger.log(EventBus.class, "CCM for event: " + e.toString() + " with param: " + params.toString(), Logger.WARN, true);
 					}
 				}
-			} else {
-				// Spammy
-//				Logger.log(EventBus.class, "No events registered for event tag " + tag, Logger.WARN, true);
 			}
 		}
 	}

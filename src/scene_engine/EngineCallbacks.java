@@ -6,13 +6,13 @@ public abstract class EngineCallbacks {
 	
 	public abstract void onLoadResources();
 	
-	public abstract Scene getInitialGameScene();
+	public abstract Scene getInitialScene();
 	
 	public abstract void onUpdate();
 	
 	public abstract void onDraw();
 	
-	public abstract void onSecondThreadFrame();
+	public abstract void onBackgroundFrame();
 	
 	public abstract void onWindowClose();
 

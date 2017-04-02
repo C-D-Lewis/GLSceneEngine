@@ -17,11 +17,8 @@ import org.lwjgl.system.MemoryUtil;
 import scene_engine.FontRenderer.Align;
 
 public abstract class Engine {
-	public static final int
-		CHROME_WIDTH = 5,
-		CHROME_HEIGHT = 28;
-	
-	private static final int 
+
+	private static final int
 		FRAME_RATE = 60,
 		FPS_PERIOD = 1000 / FRAME_RATE,
 		SWAP_INTERVAL = 60 / FRAME_RATE;
@@ -170,14 +167,9 @@ public abstract class Engine {
             update();
         }
         
-        // Window has closed
         callbacks.onWindowClose();
     }
 	
-	/**
-	 * Setup JOGL OpenGL bindings
-	 * Note: Ignores frame rate setting
-	 */
 	private static void startOpenGLLoop() {
 		new Thread(new Runnable() {
 			
@@ -206,7 +198,7 @@ public abstract class Engine {
 			@Override
 			public void onReceive(EventParams params) {
 				callbacks.onLoadResources();
-				SceneManager.setScene(callbacks.getInitialGameScene());
+				SceneManager.setScene(callbacks.getInitialScene());
 			}
 			
 		});
@@ -217,20 +209,16 @@ public abstract class Engine {
 	 **********************************************************************************************
 	 */
 	
-	/**
-	 * Start execution
-	 */
 	private static void beginSecondThread() {
-		// Second thread for non-renderable calculations
 		secondThread = new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
 				while(true) {
 					try {
-						// Proceed at frame rate, but not neccessarily in sync
+						// Proceed at frame rate, but not necessarily in sync
 						Thread.sleep(FPS_PERIOD);
-						callbacks.onSecondThreadFrame();
+						callbacks.onBackgroundFrame();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -243,7 +231,6 @@ public abstract class Engine {
 	
 	/**
 	 * Highest level updating
-	 * Public for calling from MasterScene
 	 */
 	public static void update() {
 		callbacks.onUpdate();
@@ -251,7 +238,6 @@ public abstract class Engine {
 	
 	/**
 	 * Highest level drawing
-	 * @param gl2
 	 */
 	public static void draw() {
 		callbacks.onDraw();
@@ -267,9 +253,6 @@ public abstract class Engine {
 	 */
 	public static void onLoadResources() { }
 
-	/**
-	 * Debugging statistical overlay
-	 */
 	private static void drawDebugOverlay() {
 		String string = "" + updateFps + " FPS " + lastFramePeriod/1000000 + " ms " + updateMemoryMBytes + " MB";
 		
@@ -281,9 +264,6 @@ public abstract class Engine {
 		Logger.log(Engine.class, "FPS: " + updateFps, Logger.DEBUG, false);
 	}
 
-	/**
-	 * Count frame rate
-	 */
 	private static void countFPS() {
 		fpsNow = System.nanoTime() / 1000000;
 		if((fpsNow - fpsLast) > 1000) {

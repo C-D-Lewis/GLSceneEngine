@@ -22,29 +22,22 @@ public class TileSheetParser {
 
 	/**
 	 * Constructor. Assumes square glyphs
-	 * @param sheetPath	Path to tile sheet
 	 */
 	public TileSheetParser(String path, int tileSize, boolean discardBlank) {
 		this.tileSize = tileSize;
 		
 		try {
-			//Open sheet
 			sheet = ImageIO.read(new File(path));
 			Logger.log(TileSheetParser.class, "Path is " + path, Logger.INFO, true);
 			
 			boolean b = sheet.getType() == BufferedImage.TYPE_4BYTE_ABGR;
 			Logger.assertOrCrash(b, "Sprite sheet should be BufferedImage.TYPE_4BYTE_ABGR");
 			
-			//Get parameters
 			int gridWidth = sheet.getWidth() / tileSize;
 			int gridHeight = sheet.getHeight() / tileSize;
-			
 			Logger.log(TileSheetParser.class, "Tile sheet of " + sheet.getWidth() + "x" + sheet.getHeight() + " is " + gridWidth + "x" + gridHeight + " tiles.", Logger.INFO, true);
-			
-			//Setup array
 			sprites = new BufferedImage[gridWidth][gridHeight];
 
-			//Parse sprites
 			int count = 0;
 			for(int y = 0; y < gridHeight; y++) {
 				for(int x = 0; x < gridWidth; x++) {
@@ -55,8 +48,6 @@ public class TileSheetParser {
 						}
 					} else {
 						count++;
-						
-						// Make and save the texture
 						textureMap.put(new Point(x, y), TextureManager.uploadTextureFromBufferedImage(sprites[x][y]));	// Slightly genius!
 					}
 				}
@@ -70,8 +61,6 @@ public class TileSheetParser {
 	
 	/**
 	 * Check to see if a tile is completely blank
-	 * @param inSprite	Sprite to check for transparency
-	 * @return	true if completely transparent
 	 */
 	private boolean checkSpriteBlank(BufferedImage inSprite) {
 		for(int y = 0; y < tileSize; y++) {

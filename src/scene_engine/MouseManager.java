@@ -6,11 +6,6 @@ public class MouseManager {
 	
 	private static boolean enabled;
 	
-	public static final int
-		MOUSE_LEFT = 0,
-		MOUSE_RIGHT = 1,
-		MOUSE_MIDDLE = 2;
-
 	public static void dispatchMouseButtonEvent(int button, boolean pressed) {
 		if(!enabled) {
 			return;

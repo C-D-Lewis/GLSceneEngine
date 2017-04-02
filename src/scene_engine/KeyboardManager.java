@@ -4,9 +4,6 @@ import java.util.HashMap;
 
 import org.lwjgl.glfw.GLFW;
 
-/**
- * User Input Dispatcher class to maintain state of any implemented key for checking at any time.
- */
 public class KeyboardManager {
 
 	private static HashMap<Integer, Boolean> keys = new HashMap<Integer, Boolean>();
