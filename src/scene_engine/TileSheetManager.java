@@ -10,32 +10,25 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.opengl.GL11;
 
-/**
- * Tile sheet parser to get tiles from a single image
- */
-public class TileSheetParser {
+public class TileSheetManager {
 
 	private BufferedImage sprites[][];
-	private BufferedImage sheet;
 	private HashMap<Point, Integer> textureMap = new HashMap<Point, Integer>();
 	private int tileSize;
 
-	/**
-	 * Constructor. Assumes square glyphs
-	 */
-	public TileSheetParser(String path, int tileSize, boolean discardBlank) {
+	public TileSheetManager(String path, int tileSize, boolean discardBlank) {
 		this.tileSize = tileSize;
 		
 		try {
-			sheet = ImageIO.read(new File(path));
-			Logger.log(TileSheetParser.class, "Path is " + path, Logger.INFO, true);
+			BufferedImage sheet = ImageIO.read(new File(path));
+			Logger.log(TileSheetManager.class, "Path is " + path, Logger.INFO, true);
 			
 			boolean b = sheet.getType() == BufferedImage.TYPE_4BYTE_ABGR;
 			Logger.assertOrCrash(b, "Sprite sheet should be BufferedImage.TYPE_4BYTE_ABGR");
 			
 			int gridWidth = sheet.getWidth() / tileSize;
 			int gridHeight = sheet.getHeight() / tileSize;
-			Logger.log(TileSheetParser.class, "Tile sheet of " + sheet.getWidth() + "x" + sheet.getHeight() + " is " + gridWidth + "x" + gridHeight + " tiles.", Logger.INFO, true);
+			Logger.log(TileSheetManager.class, "Tile sheet of " + sheet.getWidth() + "x" + sheet.getHeight() + " is " + gridWidth + "x" + gridHeight + " tiles.", Logger.INFO, true);
 			sprites = new BufferedImage[gridWidth][gridHeight];
 
 			int count = 0;
@@ -47,21 +40,19 @@ public class TileSheetParser {
 							sprites[x][y] = null;	//Throw it away
 						}
 					} else {
-						count++;
 						textureMap.put(new Point(x, y), TextureManager.uploadTextureFromBufferedImage(sprites[x][y]));	// Slightly genius!
+						count++;
 					}
 				}
 			}
-			Logger.log(TileSheetParser.class, "Found " + count + " tiles.", Logger.INFO, true);
+			Logger.log(TileSheetManager.class, "Found " + count + " tiles.", Logger.INFO, true);
 		} catch (IOException e) {
 			Logger.logStackTrace(e);
 			Logger.assertOrCrash(false, "Path is invalid: "  + path);
 		}
 	}
 	
-	/**
-	 * Check to see if a tile is completely blank
-	 */
+	// Check to see if a tile is completely blank
 	private boolean checkSpriteBlank(BufferedImage inSprite) {
 		for(int y = 0; y < tileSize; y++) {
 			for(int x = 0; x < tileSize; x++) {
@@ -73,18 +64,13 @@ public class TileSheetParser {
 		return true;
 	}
 	
-	/**
-	 * Getters and Setters
-	 * ***************************************************************************************************
-	 */
-
 	public BufferedImage getSprite(int x, int y) {
 		return sprites[x][y];
 	}
 	
 	public int bindTileTexture(Point tilePoint) {
 		if(textureMap.get(tilePoint) == null) {
-			Logger.log(TileSheetParser.class, "Null texture: " + tilePoint.toString(), Logger.ERROR, false);
+			Logger.log(TileSheetManager.class, "Null texture: " + tilePoint.toString(), Logger.ERROR, false);
 			return 0;
 		} else {
 			int name = textureMap.get(tilePoint);

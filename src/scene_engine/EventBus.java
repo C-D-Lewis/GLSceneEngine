@@ -6,17 +6,23 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class EventBus {
+
+	private class Config {
+
+		private static final boolean LOG_ALL_EVENTS = false;
+
+	}
 	
-	private static HashMap<String, ArrayList<EventReceiver>> bus = new HashMap<String, ArrayList<EventReceiver>>();
+	private static final HashMap<String, ArrayList<EventReceiver>> BUS = new HashMap<String, ArrayList<EventReceiver>>();
 	
 	private EventBus() { }
 	
 	public static void register(EventReceiver e) {
-		synchronized(bus) {
+		synchronized(BUS) {
 			String tag = e.getTag();
 			
-			if(bus.containsKey(tag)) {
-				ArrayList<EventReceiver> events = bus.get(tag);
+			if(BUS.containsKey(tag)) {
+				ArrayList<EventReceiver> events = BUS.get(tag);
 				if(!events.contains(e)) {
 					events.add(e);
 				} else {
@@ -25,7 +31,7 @@ public class EventBus {
 			} else {
 				ArrayList<EventReceiver> events = new ArrayList<EventReceiver>();
 				events.add(e);
-				bus.put(tag, events);
+				BUS.put(tag, events);
 			}
 			
 			if(Config.LOG_ALL_EVENTS) {
@@ -34,11 +40,11 @@ public class EventBus {
 		}
 	}
 	
-	public static void deregister(EventReceiver e) {
-		synchronized(bus) {
+	public static void unregister(EventReceiver e) {
+		synchronized(BUS) {
 			String tag = e.getTag();
 			
-			ArrayList<EventReceiver> events = bus.get(tag);
+			ArrayList<EventReceiver> events = BUS.get(tag);
 			Iterator<EventReceiver> iter = events.iterator();
 			while(iter.hasNext()) {
 				if(iter.next() == e) {
@@ -52,13 +58,13 @@ public class EventBus {
 	}
 	
 	public static void broadcast(String tag, EventParams params) {
-		synchronized(bus) {
-			if(bus.containsKey(tag)) {
+		synchronized(BUS) {
+			if(BUS.containsKey(tag)) {
 				if(Config.LOG_ALL_EVENTS) {
 					Logger.log(EventBus.class, "Firing event: " + tag + " with params: " + params.toString(), Logger.DEBUG, false);
 				}
 				
-				ArrayList<EventReceiver> events = bus.get(tag);
+				ArrayList<EventReceiver> events = BUS.get(tag);
 				for(EventReceiver e : events) {
 					try {
 						e.trigger(params);
@@ -69,13 +75,6 @@ public class EventBus {
 				}
 			}
 		}
-	}
-	
-	private class Config {
-		
-		private static final boolean
-			LOG_ALL_EVENTS = false;
-		
 	}
 
 }

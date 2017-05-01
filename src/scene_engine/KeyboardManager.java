@@ -6,6 +6,17 @@ import org.lwjgl.glfw.GLFW;
 
 public class KeyboardManager {
 
+	public static class Events {
+
+		public static final String
+				EVENT_KEY_CHANGE = KeyboardManager.class.getName() + "KEY_CHANGE";
+
+		public static final String
+				PARAM_KEY = "KEY",
+				PARAM_STATE = "STATE";
+
+	}
+
 	private static HashMap<Integer, Boolean> keys = new HashMap<Integer, Boolean>();
 	
 	private static boolean enabled;
@@ -32,17 +43,6 @@ public class KeyboardManager {
 	
 	public static void setEnabled(boolean enabled) {
 		KeyboardManager.enabled = enabled;
-	}
-	
-	public static class Events {
-		
-		public static final String
-			EVENT_KEY_CHANGE = KeyboardManager.class.getName() + "KEY_CHANGE";
-		
-		public static final String
-			PARAM_KEY = "KEY",
-			PARAM_STATE = "STATE";
-		
 	}
 	
 }

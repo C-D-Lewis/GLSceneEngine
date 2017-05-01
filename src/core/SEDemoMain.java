@@ -35,7 +35,7 @@ public class SEDemoMain {
 			}
 			
 			@Override
-			public Scene getInitialGameScene() {
+			public Scene getInitialScene() {
 				// First game Scene once OpenGL is initialized
 				return new HelloWorld();
 			}
@@ -52,11 +52,6 @@ public class SEDemoMain {
 				SceneManager.onDraw();
 			}
 
-			@Override
-			public void onSecondThreadFrame() {
-				// Perform any per-frame asynchronous work off the drawing thread
-				SceneManager.onSecondThreadFrame();
-			}
 
 			@Override
 			public void onWindowClose() {

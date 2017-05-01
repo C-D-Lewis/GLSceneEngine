@@ -5,10 +5,13 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
-/**
- * Allows logging to console and log file simultaneously
- */
 public class Logger {
+
+	private class Config {
+
+		private static final boolean LOG_TO_CONSOLE = true;
+
+	}
 
 	public static final String 
 		INFO = "[I]",
@@ -39,9 +42,9 @@ public class Logger {
 				fw.flush();
 				fw.close();
 			}
-			
+
+			// Keep the console clean for consumers
 			if(!Config.LOG_TO_CONSOLE) {
-				// Keep the console clean for consumers
 				return true;
 			}
 
@@ -64,13 +67,11 @@ public class Logger {
 	public static void logStackTrace(Exception e) {
 		PrintWriter pw;
 		try {
-			// To file
 			pw = new PrintWriter(new FileOutputStream(logPath, true));
 			e.printStackTrace(pw);
 			pw.flush();
 			pw.close();
 			
-			// To console
 			e.printStackTrace();
 		} catch (Exception e1) {
 			System.out.println("Logging stack trace failed!");
@@ -84,12 +85,6 @@ public class Logger {
 			log(Logger.class, description, Logger.ERROR, true);
 			System.exit(1);
 		}
-	}
-	
-	private class Config {
-		
-		private static final boolean LOG_TO_CONSOLE = true;
-		
 	}
 
 }

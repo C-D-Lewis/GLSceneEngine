@@ -7,7 +7,13 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 public class FontRenderer {
-	
+
+	private class Config {
+
+		private static final boolean DRAW_TEXT_BOUNDS = false;
+
+	}
+
 	public class Align {
 		
 		public static final int
@@ -26,7 +32,7 @@ public class FontRenderer {
 	}
 	
 	public static void test() {
-		GLHelpers.setColorFromColor(Color.WHITE);
+		GLHelpers.pushColor(Color.WHITE);
 		String text = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ.0123456789 .!?";
 		int fontSize = 16;
 		int width = 800;
@@ -100,7 +106,7 @@ public class FontRenderer {
 	public static void drawString(String content, Rectangle bounds, int fontSize, int hAlign, int vAlign) {
 		Logger.assertOrCrash(font != null, "FontRenderer.setFont() not called");
 		
-		TileSheetParser sheet = font.getSheet();
+		TileSheetManager sheet = font.getSheet();
 		Dimension textSize = getTextSize(content, bounds.width, fontSize);
 		int glyphGap = fontSize / 10 > 0 ? fontSize / 10 : 1;
 		
@@ -163,7 +169,7 @@ public class FontRenderer {
 			textSize = getTextSize(l, bounds.width, fontSize);
 			resetRenderPointX(bounds, renderPoint, textSize, hAlign);
 			if(Config.DRAW_TEXT_BOUNDS) {
-				GLHelpers.setColorFromColor(Color.PINK);
+				GLHelpers.pushColor(Color.PINK);
 				GLHelpers.fillRect(new Rectangle(renderPoint.x, renderPoint.y, textSize.width, textSize.height));
 				GLHelpers.popColor();
 			}
@@ -184,13 +190,6 @@ public class FontRenderer {
 			// New line
 			renderPoint.y += fontSize + (2 * glyphGap);
 		}
-	}
-	
-	private class Config {
-		
-		private static final boolean
-			DRAW_TEXT_BOUNDS = false;
-		
 	}
 
 }

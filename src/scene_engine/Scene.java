@@ -12,16 +12,16 @@ public abstract class Scene {
 	public abstract void onLoad();
 	
 	public void onResume() {
-		// Register events
+		// Register events when scene is visible
 		for(EventReceiver e : events) {
 			EventBus.register(e);
 		}
 	}
 	
 	public void onPause() {
-		// Deregister events when Scene is not visible
+		// Unregister events when Scene is not visible
 		for(EventReceiver e : events) {
-			EventBus.deregister(e);
+			EventBus.unregister(e);
 		}
 	}
 	
@@ -30,16 +30,12 @@ public abstract class Scene {
 		EventBus.register(e);
 	}
 	
-	public void onSecondThreadFrame() { }
-
 	public void onDrawWhileLoading() { }
 
 	public abstract void onUpdate();
 
 	public abstract void onDraw();
 
-	public abstract int getSceneId();
-	
 	public boolean getHasLoaded() {
 		return loaded;
 	}

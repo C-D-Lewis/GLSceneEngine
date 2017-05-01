@@ -4,12 +4,10 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 public class Blocky extends Font {
-	
-	private static final int
-		GLYPH_SIZE_PIXELS = 8;
-	private static final Dimension 
-		GLYPH_GRID_SIZE = new Dimension(5, 9);
-	
+
+	public static final int GLYPH_SIZE_PIXELS = 8;
+	public static final Dimension GLYPH_GRID_SIZE = new Dimension(5, 9);
+
 	public Blocky() {
 		super("./res/fonts/blocky.png", GLYPH_SIZE_PIXELS);
 	}

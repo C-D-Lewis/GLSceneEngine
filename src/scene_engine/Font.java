@@ -5,13 +5,13 @@ import java.awt.Point;
 
 public abstract class Font {
 	
-	private TileSheetParser sheet;
+	private TileSheetManager sheet;
 	
 	public Font(String resourcePath, int glyphSize) {
-		sheet = new TileSheetParser(resourcePath, glyphSize, false);
+		sheet = new TileSheetManager(resourcePath, glyphSize, false);
 	}
 	
-	public TileSheetParser getSheet() {
+	public TileSheetManager getSheet() {
 		return sheet;
 	}
 	

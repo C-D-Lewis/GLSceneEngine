@@ -12,8 +12,6 @@ public abstract class EngineCallbacks {
 	
 	public abstract void onDraw();
 	
-	public abstract void onBackgroundFrame();
-	
 	public abstract void onWindowClose();
 
 }

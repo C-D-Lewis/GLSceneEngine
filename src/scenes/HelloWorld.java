@@ -70,13 +70,8 @@ public class HelloWorld extends Scene {
 
 	@Override
 	public void onDraw() {
-		GLHelpers.setColorFromColor(Color.WHITE);
+		GLHelpers.pushColor(Color.WHITE);
 		FontRenderer.drawString("Hello world!", BuildConfig.SCREEN_RECT, 16, Align.CENTER, Align.CENTER);
-	}
-
-	@Override
-	public int getSceneId() {
-		return SCENE_ID;
 	}
 
 }

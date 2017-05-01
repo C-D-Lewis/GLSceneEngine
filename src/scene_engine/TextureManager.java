@@ -12,10 +12,11 @@ import org.lwjgl.opengl.GL11;
 
 public class TextureManager {
 	
-	private static HashMap<String, Integer> map = new HashMap<String, Integer>();
+	private static final HashMap<String, Integer> textureMap = new HashMap<String, Integer>();
 	
 	private TextureManager() { }
-	
+
+    // Upload to GPU
 	public static int uploadTextureFromBufferedImage(BufferedImage image) {
 		ByteBuffer idBuffer = BufferUtils.createByteBuffer(4);
 		GL11.glGenTextures(1, idBuffer);
@@ -48,21 +49,23 @@ public class TextureManager {
 	}
 	
 	public static int getTextureName(String path) {
-		if(!map.containsKey(path)) {
-			try {
-				BufferedImage image = ImageIO.read(new File(path));
-				int name = uploadTextureFromBufferedImage(image);
-				map.put(path, name);
-				return name;
-			} catch (Exception e) {
-				String msg = "Error loading texture: " + path;
-				Logger.log(TextureManager.class, msg, Logger.ERROR, true);
-				Logger.logStackTrace(e);
-				Logger.assertOrCrash(false, msg);
-				return -1;
+		synchronized (textureMap) {
+			if (!textureMap.containsKey(path)) {
+				try {
+					BufferedImage image = ImageIO.read(new File(path));
+					int name = uploadTextureFromBufferedImage(image);
+					textureMap.put(path, name);
+					return name;
+				} catch (Exception e) {
+					String msg = "Error loading texture: " + path;
+					Logger.log(TextureManager.class, msg, Logger.ERROR, true);
+					Logger.logStackTrace(e);
+					Logger.assertOrCrash(false, msg);
+					return -1;
+				}
 			}
+			return textureMap.get(path);
 		}
-		return map.get(path);
 	}
 	
 }

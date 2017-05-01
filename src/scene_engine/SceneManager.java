@@ -1,9 +1,5 @@
 package scene_engine;
 
-
-/**
- * Manages the current Scene's lifecycle and iteration
- */
 public class SceneManager {
 	
 	private static final int
@@ -38,9 +34,6 @@ public class SceneManager {
 		}
 	}
 
-	/**
-	 * Set a new Stage to manage
-	 */
 	public static void setScene(Scene newScene) {
 		if(workerThread != null) {
 			workerThread.interrupt();
@@ -55,9 +48,6 @@ public class SceneManager {
 		loadCurrentScene();
 	}
 
-	/**
-	 * Start new worker thread for loading
-	 */
 	private static void loadCurrentScene() {
 		state = STATE_LOADING;
 		
@@ -89,16 +79,6 @@ public class SceneManager {
 		});
 		
 		workerThread.start();
-	}
-
-	public static void onSecondThreadFrame() {
-		switch(state) {
-		case STATE_RUNNING:
-			currentScene.onSecondThreadFrame();
-			break;
-		default:
-			break;
-		}
 	}
 
 	public static Scene getCurrentScene() {

@@ -3,6 +3,19 @@ package scene_engine;
 import java.awt.Point;
 
 public class MouseManager {
+
+	public static class Events {
+
+		public static final String
+				EVENT_MOVED = MouseManager.class.getName() + "MOVED",
+				EVENT_BUTTON_STATE = MouseManager.class.getName() + "BUTTON_STATE";
+
+		public static final String
+				PARAM_POSITION = "POSITION",
+				PARAM_BUTTON = "BUTTON",
+				PARAM_PRESSED = "PRESSED";
+
+	}
 	
 	private static boolean enabled;
 	
@@ -29,19 +42,6 @@ public class MouseManager {
 	
 	public static void setEnabled(boolean enabled) {
 		MouseManager.enabled = enabled;
-	}
-	
-	public static class Events {
-		
-		public static final String
-			EVENT_MOVED = MouseManager.class.getName() + "MOVED",
-			EVENT_BUTTON_STATE = MouseManager.class.getName() + "BUTTON_STATE";
-		
-		public static final String
-			PARAM_POSITION = "POSITION",
-			PARAM_BUTTON = "BUTTON",
-			PARAM_PRESSED = "PRESSED";
-		
 	}
 
 }

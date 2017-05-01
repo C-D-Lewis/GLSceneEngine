@@ -70,19 +70,15 @@ public class GLHelpers {
 		return FontRenderer.getTextSize(content, width, fontSize);
 	}
 	
-	public static void setColorFromColor(Color color) {
+	public static void pushColor(Color color) {
 		lastColor = currentColor;
 		currentColor = color;
 		GL11.glColor4f(color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F, color.getAlpha() / 255.0F);
 	}
 	
-	public static Color getCurrentColor() {
-		return currentColor;
-	}
-	
 	public static void popColor() {
 		currentColor = lastColor;
-		setColorFromColor(currentColor);
+		pushColor(currentColor);
 	}
 	
 	public static void test(Rectangle bounds) {

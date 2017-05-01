@@ -18,10 +18,21 @@ import scene_engine.FontRenderer.Align;
 
 public abstract class Engine {
 
-	private static final int
-		FRAME_RATE = 60,
-		FPS_PERIOD = 1000 / FRAME_RATE,
-		SWAP_INTERVAL = 60 / FRAME_RATE;
+    public static class Events {
+
+        public static final String EVENT_FIRST_GL_FRAME = Engine.class.getName() + "FIRST_GL_FRAME";
+
+    }
+
+    private class Config {
+
+        private static final boolean DRAW_DEBUG_OVERLAY = true;
+
+        private static final int FRAME_RATE = 60;
+
+    }
+
+	private static final int SWAP_INTERVAL = 60 / Config.FRAME_RATE;
 	
 	private static Thread secondThread;
 	private static String windowName;
@@ -30,9 +41,9 @@ public abstract class Engine {
 	
 	private static int updateMemoryMBytes, fpsAverage, updateFps;
 	private static long fpsNow, fpsLast, lastFramePeriod, glWindow;
-	private static boolean fullscreen, seenFirstFrame;
-	
-	private Engine() { }
+	private static boolean fullscreen;
+
+    private Engine() { }
 	
 	public static void start(String name, Rectangle rect, EngineCallbacks cbs) {
 		windowName = name;
@@ -42,34 +53,26 @@ public abstract class Engine {
 
 		ConfigManager.load();
 		fullscreen = ConfigManager.getBoolean(ConfigManager.DB_KEY_FULLSCREEN, true);
+
 		KeyboardManager.setEnabled(true);
 		
 		// Blank until OpenGL init
 		SceneManager.setScene(new Scene() {
-			
-			@Override
-			public int getSceneId() { return 0; }
 
 			@Override
 			public void onLoad() { }
 			public void onUpdate() { }
 			public void onDraw() { }
-			
+
 		});
 		
-		//Setup graphics, must happen in this order
 		startOpenGLLoop();
-		waitForOpenGLInit();
-		beginSecondThread();
-		
+
 		//Load user stuff
 		callbacks.onFirstLoad();
 	}
-	
-	/*
-	 * GRAPHICS METHODS
-	 *********************************************************************************************
-	 */
+
+    // ---------------------------------- Graphics ---------------------------------
 	
     private static GLFWErrorCallback errorCallback;
     private static GLFWKeyCallback keyCallback;
@@ -94,7 +97,6 @@ public abstract class Engine {
             throw new RuntimeException("Failed to create the GLFW window");
         }
  
-        // Keyboard input
         GLFW.glfwSetKeyCallback(glWindow, keyCallback = new GLFWKeyCallback() {
             
         	@Override
@@ -103,8 +105,6 @@ public abstract class Engine {
             }
         	
         });
-        
-        // Mouse input
         GLFW.glfwSetMouseButtonCallback(glWindow, mouseCallback = new GLFWMouseButtonCallback() {
 			
 			@Override
@@ -124,7 +124,6 @@ public abstract class Engine {
 			
 		});
  
-        // Video mode
         GLFWVidMode vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
         if(!ConfigManager.getBoolean(ConfigManager.DB_KEY_FULLSCREEN, true)) {
 	        GLFW.glfwSetWindowPos(glWindow,
@@ -151,15 +150,15 @@ public abstract class Engine {
 	    
 	    // 2D pixel perfect projection!
 	    GL11.glOrtho(0.0f, windowRect.width, windowRect.height, 0.0f, 0.0f, 1.0f);
+
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        EventBus.broadcast(Events.EVENT_FIRST_GL_FRAME, new EventParams());
+        callbacks.onLoadResources();
+        SceneManager.setScene(callbacks.getInitialScene());
  
         while(GLFW.glfwWindowShouldClose(glWindow) == GLFW.GLFW_FALSE) {
         	GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-            if(!seenFirstFrame) {
-    			seenFirstFrame = true;
-    			EventBus.broadcast(Events.EVENT_FIRST_GL_FRAME, new EventParams());
-    		}
-            
             draw();
             GLFW.glfwSwapBuffers(glWindow); // swap the color buffers
             GLFW.glfwPollEvents();
@@ -191,72 +190,29 @@ public abstract class Engine {
 			
 		}).start();
 	}
-	
-	private static void waitForOpenGLInit() {
-		EventBus.register(new EventReceiver(Engine.Events.EVENT_FIRST_GL_FRAME, true) {
-			
-			@Override
-			public void onReceive(EventParams params) {
-				callbacks.onLoadResources();
-				SceneManager.setScene(callbacks.getInitialScene());
-			}
-			
-		});
-	}
 
-	/*
-	 * ENGINE METHODS
-	 **********************************************************************************************
-	 */
-	
-	private static void beginSecondThread() {
-		secondThread = new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				while(true) {
-					try {
-						// Proceed at frame rate, but not necessarily in sync
-						Thread.sleep(FPS_PERIOD);
-						callbacks.onBackgroundFrame();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-			
-		});
-		secondThread.start();
-	}
-	
-	/**
-	 * Highest level updating
-	 */
+    // ---------------------------------- Engine -----------------------------------
+
+	// Highest level updating
 	public static void update() {
 		callbacks.onUpdate();
 	}
 	
-	/**
-	 * Highest level drawing
-	 */
+	// Highest level drawing
 	public static void draw() {
+		long frameStart = System.nanoTime();
 		callbacks.onDraw();
+		lastFramePeriod = System.nanoTime() - frameStart;
 		if(Config.DRAW_DEBUG_OVERLAY) {
 			drawDebugOverlay();
 		}
-		
 		countFPS();
 	}
 	
-	/**
-	 * Load all resources here, once texture uploading is available
-	 */
-	public static void onLoadResources() { }
-
 	private static void drawDebugOverlay() {
 		String string = "" + updateFps + " FPS " + lastFramePeriod/1000000 + " ms " + updateMemoryMBytes + " MB";
 		
-		GLHelpers.setColorFromColor(Color.WHITE);
+		GLHelpers.pushColor(Color.WHITE);
 		FontRenderer.drawString(string, fpsBounds, 8, Align.LEFT, Align.TOP);
 	}
 	
@@ -285,30 +241,8 @@ public abstract class Engine {
 		return glWindow;
 	}
 	
-	public static void onWindowClose() {
-		callbacks.onWindowClose();
-	}
-	
-	public static int getFrameRate() {
-		return FRAME_RATE;
-	}
-
 	public static void stop() {
-		onWindowClose();
-	}
-	
-	public static class Events {
-		
-		public static final String 
-			EVENT_FIRST_GL_FRAME = Engine.class.getName() + "FIRST_GL_FRAME";
-		
-	}
-	
-	private class Config {
-		
-		private static final boolean
-			DRAW_DEBUG_OVERLAY = true;
-		
+		callbacks.onWindowClose();
 	}
 	
 }
