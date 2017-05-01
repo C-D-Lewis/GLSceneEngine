@@ -4,3 +4,7 @@ bin
 .project
 *.log
 lwjgl
+.idea
+config.ini
+./*.png
+out
