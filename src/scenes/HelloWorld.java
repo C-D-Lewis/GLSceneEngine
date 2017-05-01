@@ -32,6 +32,7 @@ public class HelloWorld extends Scene {
 			public void onReceive(EventParams params) {
 				int glfwKey = params.getInt(KeyboardManager.Events.PARAM_KEY);
 				boolean pressed = params.getBoolean(KeyboardManager.Events.PARAM_STATE);
+				Logger.log(HelloWorld.class, "Key " + glfwKey + " pressed " + pressed, Logger.INFO, false);
 				
 				// Press escape to exit
 				if(glfwKey == GLFW.GLFW_KEY_ESCAPE && !pressed) {

@@ -96,7 +96,8 @@ public abstract class Engine {
         if(glWindow == MemoryUtil.NULL) {
             throw new RuntimeException("Failed to create the GLFW window");
         }
- 
+
+        KeyboardManager.setEnabled(true);
         GLFW.glfwSetKeyCallback(glWindow, keyCallback = new GLFWKeyCallback() {
             
         	@Override
@@ -105,6 +106,7 @@ public abstract class Engine {
             }
         	
         });
+		MouseManager.setEnabled(true);
         GLFW.glfwSetMouseButtonCallback(glWindow, mouseCallback = new GLFWMouseButtonCallback() {
 			
 			@Override
