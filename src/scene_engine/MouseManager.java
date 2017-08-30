@@ -4,44 +4,36 @@ import java.awt.Point;
 
 public class MouseManager {
 
-	public static class Events {
+    public static class Events {
+        public static final String
+                MOVED_POSITION_CHANGED = MouseManager.class.getName() + "MOVED_POSITION_CHANGED",
+                BUTTON_STATE_CHANGED = MouseManager.class.getName() + "BUTTON_STATE",
+                PARAM_POSITION = "POSITION",
+                PARAM_BUTTON = "BUTTON",
+                PARAM_PRESSED = "PRESSED";
+    }
+    
+    private static boolean enabled;
+    
+    public static void dispatchMouseButtonEvent(int button, boolean pressed) {
+        if(!enabled) return;
 
-		public static final String
-				EVENT_MOVED = MouseManager.class.getName() + "MOVED",
-				EVENT_BUTTON_STATE = MouseManager.class.getName() + "BUTTON_STATE";
+        EventParams params = new EventParams();
+        params.put(Events.PARAM_BUTTON, button);
+        params.put(Events.PARAM_PRESSED, pressed);
+        EventBus.broadcast(Events.BUTTON_STATE_CHANGED, params);
+    }
+    
+    public static void dispatchMousePositionEvent(Point pos) {
+        if(!enabled) return;
 
-		public static final String
-				PARAM_POSITION = "POSITION",
-				PARAM_BUTTON = "BUTTON",
-				PARAM_PRESSED = "PRESSED";
-
-	}
-	
-	private static boolean enabled;
-	
-	public static void dispatchMouseButtonEvent(int button, boolean pressed) {
-		if(!enabled) {
-			return;
-		}
-		
-		EventParams params = new EventParams();
-		params.put(Events.PARAM_BUTTON, button);
-		params.put(Events.PARAM_PRESSED, pressed);
-		EventBus.broadcast(Events.EVENT_BUTTON_STATE, params);
-	}
-	
-	public static void dispatchMousePositionEvent(Point pos) {
-		if(!enabled) {
-			return;
-		}
-		
-		EventParams params = new EventParams();
-		params.put(Events.PARAM_POSITION, pos);
-		EventBus.broadcast(Events.EVENT_MOVED, params);
-	}
-	
-	public static void setEnabled(boolean enabled) {
-		MouseManager.enabled = enabled;
-	}
+        EventParams params = new EventParams();
+        params.put(Events.PARAM_POSITION, pos);
+        EventBus.broadcast(Events.MOVED_POSITION_CHANGED, params);
+    }
+    
+    public static void setEnabled(boolean enabled) {
+        MouseManager.enabled = enabled;
+    }
 
 }

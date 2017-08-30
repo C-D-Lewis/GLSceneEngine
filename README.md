@@ -25,7 +25,7 @@ LWJGL not supplied here, but should be configured in Eclipse to import `GLFW` et
 
 ## Usage
 
-To use the engine, simply call `Engine.start()` from `main()`, and supply some `EngineCallbacks` for essential events. After OpenGL has rendered its first frame, `onLoadResources()` will be called, allowing loading of textures, sprites, fonts, etc. A sample font bitmap is included, and is treated like a standard sprite sheet.
+To use the engine, simply call `Engine.start()` from `main()`, and supply some `EngineCallbacks` for essential events. After OpenGL has rendered its first frame, `onStartComplete()` will be called, allowing loading of textures, sprites, fonts, etc. A sample font bitmap is included, and is treated like a standard sprite sheet.
 
 ```java
 String title = "Game Window";
@@ -38,7 +38,7 @@ Engine.start(title, screenRect, fullscreen, new EngineCallbacks() {
   public void onFirstLoad() { }
   
   @Override
-  public void onLoadResources() {
+  public void onStartComplete() {
     // Initialize resources that require OpenGL to be initialized
   }
   
@@ -139,7 +139,7 @@ This event is received in `HelloWorld.java` and parsed by obtaining the params a
 EventBus.register(new EventReceiver(KeyboardManager.Events.EVENT_KEY_CHANGE, false) {
   
   @Override
-  public void onReceive(EventParams params) {
+  public void onEvent(EventParams params) {
     int glfwKey = params.getInt(KeyboardManager.Events.PARAM_KEY);
     boolean pressed = params.getBoolean(KeyboardManager.Events.PARAM_STATE);
     
