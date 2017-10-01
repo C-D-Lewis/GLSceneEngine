@@ -8,7 +8,7 @@ import java.util.Iterator;
 public class EventBus {
 
     private class Config {
-        private static final boolean LOG_ALL_EVENTS = true;
+        private static final boolean LOG_ALL_EVENTS = false;
     }
     
     private static final HashMap<String, ArrayList<EventReceiver>> BUS = new HashMap<String, ArrayList<EventReceiver>>();

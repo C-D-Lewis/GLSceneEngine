@@ -13,14 +13,6 @@ public class EventParams {
         return this;
     }
     
-    public int getInt(String tag) {
-        if(data.containsKey(tag)) return (int)data.get(tag);
-        else {
-            Logger.log(EventParams.class, "Tag " + tag + " not found!", Logger.ERROR, true);
-            return -1;
-        }
-    }
-    
     public String getString(String tag) {
         if(data.containsKey(tag)) return (String)data.get(tag);
         else {

@@ -123,12 +123,6 @@ public abstract class Engine {
             GLFW.glfwPollEvents();
             update();
         }
-
-        callbacks.onWindowClose();
-        GLFW.glfwDestroyWindow(glWindow);
-
-        // Terminate GLFW and free the error callback
-        GLFW.glfwTerminate();
     }
     
     private static void startOpenGLLoop() {
@@ -136,7 +130,11 @@ public abstract class Engine {
             lwjglInit();
             lwjglLoop();
 
+            callbacks.onWindowClose();
             GLFW.glfwDestroyWindow(glWindow);
+
+            // Terminate GLFW and free the error callback
+            GLFW.glfwTerminate();
         } finally {
             GLFW.glfwTerminate();
         }
