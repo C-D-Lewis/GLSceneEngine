@@ -3,6 +3,7 @@ package scene_engine;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.system.Configuration;
 import org.lwjgl.system.MemoryUtil;
 import scene_engine.FontRenderer.Align;
 
@@ -19,11 +20,6 @@ public abstract class Engine {
     private static final int
             FRAME_RATE = 60,
             SWAP_INTERVAL = 60 / FRAME_RATE;
-
-    private static GLFWErrorCallback errorCallback;
-    private static GLFWKeyCallback keyCallback;
-    private static GLFWMouseButtonCallback mouseCallback;
-    private static GLFWCursorPosCallback posCallback;
 
     private static String windowName;
     private static Rectangle windowRect;
@@ -53,12 +49,11 @@ public abstract class Engine {
         startOpenGLLoop();
         EventBus.broadcast(Events.INIT_COMPLETE, new EventParams());
         KeyboardManager.setEnabled(true);
-        MouseManager.setEnabled(true);
     }
     
     private static void lwjglInit() {
-        GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
-        if(GLFW.glfwInit() != GLFW.GLFW_TRUE) throw new IllegalStateException("Unable to initialize GLFW");
+        GLFW.glfwSetErrorCallback(GLFWErrorCallback.createPrint(System.err));
+        if(!GLFW.glfwInit()) throw new IllegalStateException("Unable to initialize GLFW");
         GLFW.glfwDefaultWindowHints();
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_FALSE);
@@ -74,22 +69,28 @@ public abstract class Engine {
                     (vidmode.height() - windowRect.height) / 2);
         }
 
-        GLFW.glfwSetKeyCallback(glWindow, keyCallback = new GLFWKeyCallback() {
+        GLFW.glfwSetKeyCallback(glWindow, new GLFWKeyCallback() {
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
                 KeyboardManager.dispatchKeyEvent(key, action);
             }
         });
-        GLFW.glfwSetMouseButtonCallback(glWindow, mouseCallback = new GLFWMouseButtonCallback() {
+        GLFW.glfwSetMouseButtonCallback(glWindow, new GLFWMouseButtonCallback() {
             @Override
             public void invoke(long window, int glfwButton, int action, int mods) {
                 MouseManager.dispatchMouseButtonEvent(glfwButton, (action == GLFW.GLFW_PRESS));
             }
         });
-        GLFW.glfwSetCursorPosCallback(glWindow, posCallback = new GLFWCursorPosCallback() {
+        GLFW.glfwSetCursorPosCallback(glWindow, new GLFWCursorPosCallback() {
             @Override
             public void invoke(long window, double xpos, double ypos) {
-                MouseManager.dispatchMousePositionEvent( new Point((int)xpos, (int)ypos));
+                MouseManager.dispatchMousePositionEvent(new Point((int)xpos, (int)ypos));
+            }
+        });
+        GLFW.glfwSetScrollCallback(glWindow, new GLFWScrollCallback() {
+            @Override
+            public void invoke(long window, double xoffset, double yoffset) {
+                MouseManager.dispatchMouseScrollEvent(yoffset);
             }
         });
  
@@ -115,32 +116,30 @@ public abstract class Engine {
         callbacks.onStartComplete();
         SceneManager.setScene(callbacks.getInitialScene());
 
-        while(GLFW.glfwWindowShouldClose(glWindow) == GLFW.GLFW_FALSE) {
+        while(!GLFW.glfwWindowShouldClose(glWindow)) {
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
             draw();
             GLFW.glfwSwapBuffers(glWindow);
             GLFW.glfwPollEvents();
             update();
         }
-        
+
         callbacks.onWindowClose();
+        GLFW.glfwDestroyWindow(glWindow);
+
+        // Terminate GLFW and free the error callback
+        GLFW.glfwTerminate();
     }
     
     private static void startOpenGLLoop() {
-        new Thread(() -> {
-            try {
-                lwjglInit();
-                lwjglLoop();
+        try {
+            lwjglInit();
+            lwjglLoop();
 
-                GLFW.glfwDestroyWindow(glWindow);
-                keyCallback.release();
-                mouseCallback.release();
-                posCallback.release();
-            } finally {
-                GLFW.glfwTerminate();
-                errorCallback.release();
-            }
-        }).start();
+            GLFW.glfwDestroyWindow(glWindow);
+        } finally {
+            GLFW.glfwTerminate();
+        }
     }
 
     private static void update() {

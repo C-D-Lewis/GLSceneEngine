@@ -8,7 +8,7 @@ import java.util.Iterator;
 public class EventBus {
 
     private class Config {
-        private static final boolean LOG_ALL_EVENTS = false;
+        private static final boolean LOG_ALL_EVENTS = true;
     }
     
     private static final HashMap<String, ArrayList<EventReceiver>> BUS = new HashMap<String, ArrayList<EventReceiver>>();
@@ -19,15 +19,17 @@ public class EventBus {
         synchronized(BUS) {
             String tag = e.getTag();
             if(Config.LOG_ALL_EVENTS) Logger.log(EventBus.class, "Registered event " + e.toString() + " for tag " + tag, Logger.INFO, true);
+
             if(BUS.containsKey(tag)) {
                 ArrayList<EventReceiver> events = BUS.get(tag);
                 if(!events.contains(e)) events.add(e);
                 else Logger.log(EventBus.class, "Ignoring reregistering event " + e.toString(), Logger.WARN, true);
-            } else {
-                ArrayList<EventReceiver> events = new ArrayList<EventReceiver>();
-                events.add(e);
-                BUS.put(tag, events);
+                return;
             }
+
+            ArrayList<EventReceiver> events = new ArrayList<EventReceiver>();
+            events.add(e);
+            BUS.put(tag, events);
         }
     }
     

@@ -3,7 +3,7 @@ bin
 .classpath
 .project
 *.log
-lwjgl
+lwjgl_*
 .idea
 config.ini
 ./*.png

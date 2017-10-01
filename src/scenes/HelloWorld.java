@@ -1,7 +1,6 @@
 package scenes;
 
 import core.BuildConfig;
-import core.SEDemoMain;
 import org.lwjgl.glfw.GLFW;
 import scene_engine.*;
 import scene_engine.FontRenderer.Align;
@@ -27,16 +26,29 @@ public class HelloWorld extends Scene {
             public void onEvent(EventParams params) {
                 boolean pressed = params.getBoolean(MouseManager.Events.PARAM_PRESSED);
                 String str = "Mouse " + (pressed ? "clicked!" : "released!");
-                Logger.log(SEDemoMain.class, str, Logger.INFO, false);
+                Logger.log(HelloWorld.class, str, Logger.INFO, false);
             }
         });
         EventBus.register(new EventReceiver(MouseManager.Events.MOVED_POSITION_CHANGED, false) {
             @Override
             public void onEvent(EventParams params) {
                 Point pos = params.getPoint(MouseManager.Events.PARAM_POSITION);
-                Logger.log(SEDemoMain.class, "Mouse now at: " + pos, Logger.INFO, false);
+                Logger.log(HelloWorld.class, "Mouse now at: " + pos, Logger.INFO, false);
             }
         });
+        EventBus.register(new EventReceiver(MouseManager.Events.MOUSE_SCROLL_CHANGED, false) {
+            @Override
+            public void onEvent(EventParams params) {
+                int dir = params.getInteger(MouseManager.Events.PARAM_SCROLL_DIRECTION);
+                String direction = null;
+                switch(dir) {
+                    case MouseManager.ScrollDirection.UP: direction = "UP"; break;
+                    case MouseManager.ScrollDirection.DOWN: direction = "DOWN"; break;
+                }
+                Logger.log(HelloWorld.class, "Mouse scrolled " + direction, Logger.INFO, false);
+            }
+        });
+        Logger.log(HelloWorld.class, "Registered EventBus handlers", Logger.INFO, false);
     }
 
     @Override

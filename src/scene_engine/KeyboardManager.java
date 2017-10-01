@@ -27,10 +27,10 @@ public class KeyboardManager {
         boolean pressed = (action == GLFW.GLFW_PRESS) || (action == GLFW.GLFW_REPEAT);
         keys.put(key, pressed);
         
-        EventParams params = new EventParams();
-        params.put(Events.PARAM_KEY, key);
-        params.put(Events.PARAM_STATE, pressed);
-        EventBus.broadcast(Events.KEY_CHANGE, params);
+        EventBus.broadcast(Events.KEY_CHANGE,
+            new EventParams()
+                .put(Events.PARAM_KEY, key)
+                .put(Events.PARAM_STATE, pressed));
     }
     
     public static void setEnabled(boolean enabled) {

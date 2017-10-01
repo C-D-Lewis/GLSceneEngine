@@ -17,10 +17,9 @@ public class TextureManager {
     private TextureManager() { }
 
     public static int uploadTextureToGPU(BufferedImage image) {
-        ByteBuffer idBuffer = BufferUtils.createByteBuffer(4);
-        GL11.glGenTextures(1, idBuffer);
-        idBuffer.rewind();
-        int name = idBuffer.getInt();
+        int[] names = new int[1];
+        GL11.glGenTextures(names);
+        int name = names[0];
         
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, name);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);

@@ -8,8 +8,9 @@ public class EventParams {
     
     private HashMap<String, Object> data = new HashMap<String, Object>();
     
-    public void put(String tag, Object value) {
+    public EventParams put(String tag, Object value) {
         data.put(tag, value);
+        return this;
     }
     
     public int getInt(String tag) {
@@ -41,6 +42,14 @@ public class EventParams {
         else {
             Logger.log(EventParams.class, "Tag " + tag + " not found!", Logger.ERROR, true);
             return null;
+        }
+    }
+
+    public int getInteger(final String tag) {
+        if(data.containsKey(tag)) return (int)data.get(tag);
+        else {
+            Logger.log(EventParams.class, "Tag " + tag + " not found!", Logger.ERROR, true);
+            return 0;
         }
     }
     
