@@ -61,6 +61,7 @@ public class TextureManager {
                     return -1;
                 }
             }
+
             return textureMap.get(path);
         }
     }

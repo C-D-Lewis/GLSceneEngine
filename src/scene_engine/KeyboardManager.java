@@ -15,26 +15,18 @@ public class KeyboardManager {
 
     private static HashMap<Integer, Boolean> keys = new HashMap<Integer, Boolean>();
     
-    private static boolean enabled;
-    
     private KeyboardManager() { }
     
     public static boolean getKeyState(int keyCode) { return (keys.get(keyCode) != null) ? keys.get(keyCode) : false; }
     
-    public static void dispatchKeyEvent(int key, int action) {
-        if(!enabled) return;
-
+    public static void broadcastKeyEvent(int key, int action) {
         boolean pressed = (action == GLFW.GLFW_PRESS) || (action == GLFW.GLFW_REPEAT);
         keys.put(key, pressed);
         
         EventBus.broadcast(Events.KEY_CHANGE,
-            new EventParams()
+            new EventBus.Params()
                 .put(Events.PARAM_KEY, key)
                 .put(Events.PARAM_STATE, pressed));
-    }
-    
-    public static void setEnabled(boolean enabled) {
-        KeyboardManager.enabled = enabled;
     }
     
 }

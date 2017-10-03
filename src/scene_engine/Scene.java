@@ -2,36 +2,33 @@ package scene_engine;
 
 import java.util.ArrayList;
 
-
 public abstract class Scene {
     
-    private ArrayList<EventReceiver> events = new ArrayList<EventReceiver>();
+    private ArrayList<EventBus.Receiver> events = new ArrayList<EventBus.Receiver>();
     
     private boolean loaded;
     
-    public abstract void onLoad();
-    
     public void onResume() {
-        for(EventReceiver e : events) EventBus.register(e);
+        for(EventBus.Receiver e : events) EventBus.register(e);
     }
     
     public void onPause() {
-        for(EventReceiver e : events) EventBus.unregister(e);
+        for(EventBus.Receiver e : events) EventBus.unregister(e);
     }
     
-    public void manageEventReceiver(EventReceiver e) {
+    public void manageEventReceiver(EventBus.Receiver e) {
         events.add(e);
         EventBus.register(e);
     }
     
     public void onDrawWhileLoading() { }
 
+    public abstract void onLoad();
     public abstract void onUpdate();
-
     public abstract void onDraw();
 
-    public boolean getHasLoaded() { return loaded; }
+    public boolean hasLoaded() { return loaded; }
 
-    public void setHasLoaded(boolean hasLoaded) { loaded = hasLoaded; }
+    public void setLoaded(boolean hasLoaded) { loaded = hasLoaded; }
     
 }

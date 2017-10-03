@@ -71,7 +71,7 @@ public class FontRenderer {
     public static void drawString(String content, Rectangle bounds, int fontSize, int hAlign, int vAlign) {
         Logger.assertOrCrash(font != null, "FontRenderer.setFont() not called");
         
-        TileSheetManager sheet = font.getSheet();
+        TileSheet sheet = font.getSheet();
         Dimension textSize = getTextSize(content, bounds.width, fontSize);
         int glyphGap = fontSize / 10 > 0 ? fontSize / 10 : 1;
         
@@ -175,6 +175,20 @@ public class FontRenderer {
         drawString("TOP", new Rectangle(0, y, width, 100), fontSize, Align.LEFT, Align.TOP);
         drawString("CENTER", new Rectangle(0, y, width, 100), fontSize, Align.LEFT, Align.CENTER);
         drawString("BOTTOM", new Rectangle(0, y, width, 100), fontSize, Align.LEFT, Align.BOTTOM);
+    }
+
+    public abstract static class Font {
+
+        private TileSheet sheet;
+
+        public abstract Point characterToGlyphSheetPoint(char c);
+
+        public Font(String resourcePath, int glyphSize) {
+            sheet = new TileSheet(resourcePath, glyphSize, false);
+        }
+
+        public TileSheet getSheet() { return sheet; }
+
     }
 
 }

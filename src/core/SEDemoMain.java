@@ -1,12 +1,6 @@
 package core;
 
-import scene_engine.Blocky;
-import scene_engine.Engine;
-import scene_engine.EngineCallbacks;
-import scene_engine.FontRenderer;
-import scene_engine.Logger;
-import scene_engine.Scene;
-import scene_engine.SceneManager;
+import scene_engine.*;
 import scenes.HelloWorld;
 
 public class SEDemoMain {
@@ -22,7 +16,7 @@ public class SEDemoMain {
 
     private static void setupEngine() {
         String title = BuildConfig.GAME_NAME + " v" + BuildConfig.VERSION_STRING;
-        Engine.start(title, BuildConfig.SCREEN_RECT, new EngineCallbacks() {
+        Engine.start(title, BuildConfig.SCREEN_RECT, new Engine.Callbacks() {
             @Override
             public void onStartComplete() {
                 FontRenderer.setFont(new Blocky());

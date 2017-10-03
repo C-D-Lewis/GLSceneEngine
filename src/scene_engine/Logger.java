@@ -7,11 +7,7 @@ import java.io.PrintWriter;
 
 public class Logger {
 
-    private class Config {
-        private static final boolean LOG_TO_CONSOLE = true;
-    }
-
-    public static final String 
+    public static final String
         INFO = "[I]",
         WARN = "[W]",
         DEBUG = "[D]",
@@ -26,7 +22,6 @@ public class Logger {
             String TAG = clz.getName();
             
             if(!level.equals(INFO)) level = "    " + level;
-
             if(toFile) {
                 File f = new File(logPath);
                 FileWriter fw = new FileWriter(f, true);
@@ -34,32 +29,30 @@ public class Logger {
                 fw.flush();
                 fw.close();
             }
-
-            if(!Config.LOG_TO_CONSOLE) return true;
-
             String content = level + " " + TAG + ": " + message;
-            if(level.equals(ERROR)) System.err.println(content);
-            else System.out.println(content);
+            if(level.equals(ERROR)) {
+                System.err.println(content);
+                return true;
+            }
+
+            System.out.println(content);
             return true;
         } catch (Exception e) {
-            System.err.println("ERROR LOGGING: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
     }
     
-    public static void logStackTrace(Exception exception) {
-        PrintWriter pw;
+    public static void logStackTrace(Exception e) {
         try {
-            pw = new PrintWriter(new FileOutputStream(logPath, true));
-            exception.printStackTrace(pw);
+            PrintWriter pw = new PrintWriter(new FileOutputStream(logPath, true));
+            e.printStackTrace(pw);
             pw.flush();
             pw.close();
             
-            exception.printStackTrace();
-        } catch (Exception e) {
-            System.out.println("Logging stack trace failed!");
             e.printStackTrace();
+        } catch (Exception e1) {
+            e1.printStackTrace();
         }
     }
     

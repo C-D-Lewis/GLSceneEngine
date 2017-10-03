@@ -10,24 +10,25 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.opengl.GL11;
 
-public class TileSheetManager {
+public class TileSheet {
 
     private BufferedImage sprites[][];
     private HashMap<Point, Integer> textureMap = new HashMap<Point, Integer>();
     private int tileSize;
 
-    public TileSheetManager(String path, int tileSize, boolean discardBlank) {
+    public TileSheet(String path, int tileSize, boolean discardBlank) {
         this.tileSize = tileSize;
+
         try {
             BufferedImage sheet = ImageIO.read(new File(path));
-            Logger.log(TileSheetManager.class, "Path is " + path, Logger.INFO, true);
+            Logger.log(TileSheet.class, "Path is " + path, Logger.INFO, true);
             
             boolean b = sheet.getType() == BufferedImage.TYPE_4BYTE_ABGR;
             Logger.assertOrCrash(b, "Sprite sheet should be BufferedImage.TYPE_4BYTE_ABGR");
             
             int gridWidth = sheet.getWidth() / tileSize;
             int gridHeight = sheet.getHeight() / tileSize;
-            Logger.log(TileSheetManager.class, "Tile sheet of " + sheet.getWidth() + "x" + sheet.getHeight() + " is " + gridWidth + "x" + gridHeight + " tiles.", Logger.INFO, true);
+            Logger.log(TileSheet.class, "Tile sheet of " + sheet.getWidth() + "x" + sheet.getHeight() + " is " + gridWidth + "x" + gridHeight + " tiles.", Logger.INFO, true);
             sprites = new BufferedImage[gridWidth][gridHeight];
 
             int count = 0;
@@ -42,7 +43,7 @@ public class TileSheetManager {
                     }
                 }
             }
-            Logger.log(TileSheetManager.class, "Found " + count + " tiles.", Logger.INFO, true);
+            Logger.log(TileSheet.class, "Found " + count + " tiles.", Logger.INFO, true);
         } catch (IOException e) {
             Logger.logStackTrace(e);
             Logger.assertOrCrash(false, "Path is invalid: "  + path);
@@ -59,19 +60,17 @@ public class TileSheetManager {
         return true;
     }
     
-    public BufferedImage getSprite(int x, int y) {
-        return sprites[x][y];
-    }
+    public BufferedImage getSprite(int x, int y) { return sprites[x][y]; }
     
     public int bindTileTextureToGPU(Point tilePoint) {
         if(textureMap.get(tilePoint) == null) {
-            Logger.log(TileSheetManager.class, "Null texture: " + tilePoint.toString(), Logger.ERROR, false);
+            Logger.log(TileSheet.class, "Null texture: " + tilePoint.toString(), Logger.ERROR, false);
             return 0;
-        } else {
-            int name = textureMap.get(tilePoint);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, name);
-            return name;
         }
+
+        int name = textureMap.get(tilePoint);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, name);
+        return name;
     }
     
 }

@@ -3,7 +3,7 @@ package scene_engine;
 import java.awt.Dimension;
 import java.awt.Point;
 
-public class Blocky extends Font {
+public class Blocky extends FontRenderer.Font {
 
     public static final int GLYPH_SIZE_PIXELS = 8;
     public static final Dimension GLYPH_GRID_SIZE = new Dimension(5, 9);

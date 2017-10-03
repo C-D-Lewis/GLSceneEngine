@@ -21,7 +21,6 @@ public class INIParser {
                 fw.close();
             }
         } catch(Exception e) {
-            System.err.println("Error opening file " + path);
             e.printStackTrace();
         }
     }
@@ -52,13 +51,12 @@ public class INIParser {
             br.close();
             return true;
         } catch(Exception e) {
-            System.err.println("Error putting " + file.getAbsolutePath());
             e.printStackTrace();
             return false;
         }
     }
     
-    public String get(String key, boolean required) {
+    public String getString(String key, boolean required) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String next = br.readLine();
@@ -69,14 +67,21 @@ public class INIParser {
                 }
                 next = br.readLine();
             }
+
             if(required) Logger.log(INIParser.class, "Could not find " + key + " in file " + file.getAbsolutePath(), Logger.ERROR, true);
+
             br.close();
             return null;
         } catch(Exception e) {
-            System.err.println("Error getting " + key + " from " + file.getAbsolutePath());
             e.printStackTrace();
             return null;
         }
     }
+
+    public boolean contains(String key, boolean required) { return getString(key, required) != null; }
+
+    public boolean getBoolean(String key, boolean required) { return Boolean.parseBoolean(getString(key, required)); }
+
+    public int getInteger(String key, boolean required) { return Integer.parseInt(getString(key, required)); }
     
 }
