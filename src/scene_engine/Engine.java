@@ -8,18 +8,12 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
 import scene_engine.FontRenderer.Align;
 
+import javax.swing.*;
 import java.awt.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public abstract class Engine {
-
-    public static class Events {
-        public static final String
-                INIT_COMPLETE = "INIT_COMPELTE";
-    }
-
-    public static class ConfigKeys {
-        public static final String DB_KEY_FULLSCREEN = "fullscreen";
-    }
+public class Engine {
 
     private static final Rectangle FPS_BOUNDS = new Rectangle(5, 5, 300, 20);
     private static final boolean DRAW_DEBUG_OVERLAY = true;
@@ -27,17 +21,17 @@ public abstract class Engine {
             FRAME_RATE = 60,
             SWAP_INTERVAL = 60 / FRAME_RATE;
 
-    private static String windowName;
+    private static String windowName, renderMode;
     private static Rectangle windowRect;
     private static Callbacks callbacks;
     private static INIParser configIni;
-
+    private static SceneManager sceneManager = new SceneManager();
     private static int updateMemoryMBytes, fpsAverage, updateFps;
     private static long fpsLast, lastFramePeriod, glWindow;
     private static float zoomMultiplier = 1.0f;
 
     private Engine() { }
-    
+
     public static void start(String name, Rectangle rect, Callbacks cbs) {
         windowName = name;
         windowRect = rect;
@@ -45,25 +39,71 @@ public abstract class Engine {
 
         // Init config
         configIni = new INIParser("./engine-config.ini");
-        if(!configIni.contains(ConfigKeys.DB_KEY_FULLSCREEN, false)) {
-            configIni.put(ConfigKeys.DB_KEY_FULLSCREEN, Boolean.toString(false));
+        if(!configIni.contains(ConfigKeys.FULLSCREEN, false)) {
+            configIni.put(ConfigKeys.FULLSCREEN, Boolean.toString(false));
+            configIni.put(ConfigKeys.RENDER_MODE, RenderMode.OPEN_GL);
         }
+        renderMode = configIni.getString(ConfigKeys.RENDER_MODE, true);
 
-        SceneManager.setScene(new Scene() {
+        sceneManager.setScene(new Scene() {
             @Override
             public void onLoad() { }
-            public void onUpdate() { }
-            public void onDraw() { }
+            public void update() { }
+            public void draw() { }
+            public void draw(Graphics2D g2d) { }
         });
 
+        switch(renderMode) {
+            case RenderMode.OPEN_GL: useOpenGl(); break;
+            case RenderMode.JAVA_2D: useJava2D(); break;
+            default:
+                Logger.log(Engine.class, "Invalid rendermode: " + renderMode, Logger.ERROR, true);
+                break;
+        }
+    }
+
+    private static void useJava2D() {
+        JFrame window = new JFrame(windowName);
+        window.setPreferredSize(new Dimension(windowRect.width, windowRect.height));
+
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D)g;
+                g2d.setColor(Color.BLACK);
+                g2d.fillRect(0, 0, windowRect.width, windowRect.height);
+                draw(g2d);
+            }
+        };
+        window.add(panel);
+
+        // Set mouse, keyboard, cursor position callbacks
+        KeyboardManager.useJFrame(window);
+        MouseManager.useJFrame(window);
+
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                update();
+                panel.repaint();
+            }
+        }, 0, (1000 / 60));
+
+        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        window.setVisible(true);
+        window.pack();
+
+        EventBus.broadcast(Events.INIT_COMPLETE, new EventBus.Params());
+        callbacks.onStartComplete();
+        sceneManager.setScene(callbacks.getInitialScene());
+    }
+
+    private static void useOpenGl() {
         try {
             lwjglInit();
-
             EventBus.broadcast(Events.INIT_COMPLETE, new EventBus.Params());
-
             lwjglLoop();
-
-            callbacks.onWindowClose();
             GLFW.glfwDestroyWindow(glWindow);
         } finally {
             GLFW.glfwTerminate();
@@ -79,7 +119,7 @@ public abstract class Engine {
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_FALSE);
  
         // Create the window
-        boolean fullscreen = configIni.getBoolean(ConfigKeys.DB_KEY_FULLSCREEN, true);
+        boolean fullscreen = configIni.getBoolean(ConfigKeys.FULLSCREEN, true);
         long fs = fullscreen ? GLFW.glfwGetPrimaryMonitor() : MemoryUtil.NULL;
         glWindow = GLFW.glfwCreateWindow(windowRect.width, windowRect.height, windowName, fs, MemoryUtil.NULL);
         if(glWindow == MemoryUtil.NULL) throw new RuntimeException("Failed to create the GLFW window");
@@ -101,7 +141,7 @@ public abstract class Engine {
             MouseManager.broadcastPositionEvent(new Point((int)xpos, (int)ypos));
         });
         GLFW.glfwSetScrollCallback(glWindow, (long window, double xoffset, double yoffset) -> {
-            MouseManager.dispatchMouseScrollEvent(yoffset);
+            MouseManager.broadcastMouseScrollEvent(yoffset);
         });
  
         GLFW.glfwMakeContextCurrent(glWindow);
@@ -119,7 +159,7 @@ public abstract class Engine {
         GL11.glMatrixMode(GL11.GL_PROJECTION);
 
         callbacks.onStartComplete();
-        SceneManager.setScene(callbacks.getInitialScene());
+        sceneManager.setScene(callbacks.getInitialScene());
 
         while (!GLFW.glfwWindowShouldClose(glWindow)) {
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
@@ -134,16 +174,27 @@ public abstract class Engine {
         }
     }
 
-    private static void update() { SceneManager.update(); }
-    
+    private static void update() { sceneManager.update(); }
+
     private static void draw() {
         long frameStart = System.nanoTime();
-        SceneManager.draw();
+        sceneManager.draw();
         lastFramePeriod = System.nanoTime() - frameStart;
         countFPS();
         if(DRAW_DEBUG_OVERLAY) drawDebugOverlay();
     }
-    
+
+    private static void draw(Graphics2D g2d) {
+        long frameStart = System.nanoTime();
+        sceneManager.draw(g2d);
+        lastFramePeriod = System.nanoTime() - frameStart;
+        countFPS();
+    }
+
+    public static void stop() { System.exit(0); }
+
+    public static String getRenderMode() { return renderMode; }
+
     private static void drawDebugOverlay() {
         String string = updateFps + " FPS " + (lastFramePeriod / 1000000) + " ms " + updateMemoryMBytes + " MB";
         GLHelpers.pushNewColor(Color.WHITE);
@@ -166,16 +217,28 @@ public abstract class Engine {
                ((double)(r.freeMemory() / 1024) / 1024);
     }
     
-    public static void stop() { callbacks.onWindowClose(); }
-
     public static void setZoomMultiplier(float multiplier) { zoomMultiplier = multiplier; }
 
     public abstract static class Callbacks {
-
         public abstract void onStartComplete();
         public abstract Scene getInitialScene();
-        public abstract void onWindowClose();
+    }
 
+    public static class Events {
+        public static final String
+                INIT_COMPLETE = "INIT_COMPELTE";
+    }
+
+    public static class ConfigKeys {
+        public static final String
+                FULLSCREEN = "fullscreen",
+                RENDER_MODE = "rendermode";
+    }
+
+    public static class RenderMode {
+        public static final String
+                OPEN_GL = "opengl",
+                JAVA_2D = "java2d";
     }
 
 }

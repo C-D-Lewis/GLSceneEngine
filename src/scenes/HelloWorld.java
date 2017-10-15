@@ -1,6 +1,7 @@
 package scenes;
 
 import core.BuildConfig;
+import entities.TexturedBox;
 import org.lwjgl.glfw.GLFW;
 import scene_engine.*;
 import scene_engine.FontRenderer.Align;
@@ -8,6 +9,12 @@ import scene_engine.FontRenderer.Align;
 import java.awt.*;
 
 public class HelloWorld extends Scene {
+
+    private TexturedBox box;
+
+    public HelloWorld() {
+        box = new TexturedBox(new Rectangle(0, 0, 100, 100), "./res/entity/box.png");
+    }
     
     @Override
     public void onLoad() {
@@ -52,12 +59,24 @@ public class HelloWorld extends Scene {
     }
 
     @Override
-    public void onUpdate() { }
+    public void update() {
+        box.update();
+    }
 
     @Override
-    public void onDraw() {
+    public void draw() {
         GLHelpers.pushNewColor(Color.WHITE);
         FontRenderer.drawString("Hello world!", BuildConfig.SCREEN_RECT, 16, Align.CENTER, Align.CENTER);
+
+        box.draw();
+    }
+
+    @Override
+    public void draw(Graphics2D g2d) {
+        g2d.setColor(Color.WHITE);
+        g2d.drawString("Hello world!", BuildConfig.SCREEN_RECT.width / 2, BuildConfig.SCREEN_RECT.height / 2);
+
+        box.draw(g2d);
     }
 
 }

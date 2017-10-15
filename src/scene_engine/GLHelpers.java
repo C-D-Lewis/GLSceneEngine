@@ -1,15 +1,13 @@
 package scene_engine;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.*;
 
 import org.lwjgl.opengl.GL11;
 
 public class GLHelpers {
     
     private static Color lastColor, currentColor;
-    
+
     public static void fillRect(Rectangle bounds) {
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glVertex2f(bounds.x, bounds.y);
@@ -18,7 +16,7 @@ public class GLHelpers {
         GL11.glVertex2f(bounds.x + bounds.width, bounds.y);
         GL11.glEnd();
     }
-    
+
     public static void drawRect(Rectangle bounds) {
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex2f(bounds.x, bounds.y);
@@ -94,5 +92,4 @@ public class GLHelpers {
     public static void logGLError(String context) {
         Logger.log(GLHelpers.class, "(" + context + ")" + " -> " + GL11.glGetError(), Logger.DEBUG, true);
     }
-    
 }

@@ -1,8 +1,9 @@
 package scene_engine;
 
+import java.awt.*;
 import java.util.ArrayList;
 
-public abstract class Scene {
+public abstract class Scene implements Loopable {
     
     private ArrayList<EventBus.Receiver> events = new ArrayList<EventBus.Receiver>();
     
@@ -21,11 +22,11 @@ public abstract class Scene {
         EventBus.register(e);
     }
     
-    public void onDrawWhileLoading() { }
+    public void drawWhileLoading() { }
+
+    public void drawWhileLoading(Graphics2D g2d) { }
 
     public abstract void onLoad();
-    public abstract void onUpdate();
-    public abstract void onDraw();
 
     public boolean hasLoaded() { return loaded; }
 

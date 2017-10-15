@@ -1,8 +1,12 @@
 package scene_engine;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.HashMap;
 
 import org.lwjgl.glfw.GLFW;
+
+import javax.swing.*;
 
 public class KeyboardManager {
 
@@ -27,6 +31,23 @@ public class KeyboardManager {
             new EventBus.Params()
                 .put(Events.PARAM_KEY, key)
                 .put(Events.PARAM_STATE, pressed));
+    }
+
+    public static void useJFrame(JFrame window) {
+        window.addKeyListener(new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                broadcastKeyEvent(e.getKeyCode(), GLFW.GLFW_PRESS);
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                broadcastKeyEvent(e.getKeyCode(), GLFW.GLFW_RELEASE);
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) { }
+        });
     }
     
 }

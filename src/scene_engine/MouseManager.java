@@ -1,6 +1,10 @@
 package scene_engine;
 
+import javax.swing.*;
 import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 public class MouseManager {
 
@@ -34,10 +38,36 @@ public class MouseManager {
                 .put(Events.PARAM_POSITION, pos));
     }
 
-    public static void dispatchMouseScrollEvent(final double yOffset) {
+    public static void broadcastMouseScrollEvent(final double yOffset) {
         EventBus.broadcast(Events.MOUSE_SCROLL_CHANGED,
             new EventBus.Params()
                 .put(Events.PARAM_SCROLL_DIRECTION, (int)Math.round(yOffset)));
+    }
+
+    public static void useJFrame(JFrame window) {
+        window.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                broadcastButtonEvent(e.getButton(), true);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                broadcastButtonEvent(e.getButton(), false);
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) { }
+        });
+        window.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                broadcastPositionEvent(new Point(e.getX(), e.getY()));
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) { }
+        });
     }
     
 }

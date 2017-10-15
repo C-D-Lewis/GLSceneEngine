@@ -3,6 +3,8 @@ package core;
 import scene_engine.*;
 import scenes.HelloWorld;
 
+import java.util.Objects;
+
 public class SEDemoMain {
     
     public static void main(String[] args) {
@@ -19,16 +21,11 @@ public class SEDemoMain {
         Engine.start(title, BuildConfig.SCREEN_RECT, new Engine.Callbacks() {
             @Override
             public void onStartComplete() {
-                FontRenderer.setFont(new Blocky());
+                if(Engine.getRenderMode().equals(Engine.RenderMode.OPEN_GL)) FontRenderer.setFont(new Blocky());
             }
-            
+
             @Override
             public Scene getInitialScene() { return new HelloWorld(); }
-            
-            @Override
-            public void onWindowClose() {
-                System.exit(0);
-            }
         });
     }
     
